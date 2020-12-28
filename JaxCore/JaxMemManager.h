@@ -16,7 +16,7 @@ namespace Jax
 	class JAXCORE_API JaxMemManager
 	{
 	public:
-		JaxMemManager() {}
+		JaxMemManager();
 		virtual ~JaxMemManager() = 0;
 		virtual void* Allocate(size_t size, size_t alignment, bool isArray) = 0;
 		virtual void Deallocate(char* addr, size_t alignment, bool isArray) = 0;
@@ -28,8 +28,8 @@ namespace Jax
 		JaxDebugMem();
 		~JaxDebugMem();
 
-		virtual void* Allocate(size_t size, size_t alignment, bool isArray) = 0;
-		virtual void Deallocate(char* addr, size_t alignment, bool isArray) = 0;
+		virtual void* Allocate(size_t size, size_t alignment, bool isArray);
+		virtual void Deallocate(char* addr, size_t alignment, bool isArray);
 		
 	private:
 		enum
@@ -72,6 +72,42 @@ namespace Jax
 		size_t m_uiSizeRecord[RECORD_NUM];
 		void InsertBlock(Block* pBlock);
 		void RemoveBlock(Block* pBlock);
-		
+		bool GetFileAndLine(const void* pAddress, TCHAR szFile[MAX_PATH], int& line);
+		bool InitDbgHelpLib();
+		void FreeDbgHelpLib();
+		void FreeLeakMem();
+		void PrintInfo();
 	};
+
+	class JAXCORE_API JaxMemObject
+	{
+	public:
+		JaxMemObject();
+		~JaxMemObject() {}
+		static JaxMemManager& GetMemManager();
+	};
+
+	typedef JaxMemManager& (*JaxMemManagerFun)();
 }
+
+#define USE_CUSTOM_NEW
+
+#ifdef USE_CUSTOM_NEW
+FORCEINLINE void* operator new(size_t size)
+{
+	return Jax::JaxMemObject::GetMemManager().Allocate((size_t)size, 0, false);
+}
+FORCEINLINE void* operator new[](size_t size)
+{
+	return Jax::JaxMemObject::GetMemManager().Allocate((size_t)size, 0, true);
+}
+FORCEINLINE void operator delete(void* pAddr)
+{
+	return Jax::JaxMemObject::GetMemManager().Deallocate((char*)pAddr, 0, false);
+}
+FORCEINLINE void operator delete[](void* pAddr)
+{
+	return Jax::JaxMemObject::GetMemManager().Deallocate((char*)pAddr, 0, true);
+}
+#endif // USE_CUSTOM_NEW
+

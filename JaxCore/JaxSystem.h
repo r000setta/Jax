@@ -105,5 +105,17 @@ namespace Jax
 		return;
 #endif
 	}
+
+	FORCEINLINE void JaxStrCopy(TCHAR* dest, size_t size, const TCHAR* src)
+	{
+#ifdef WINDOWS
+		_tcscpy_s(dest, size, src);
+#else
+		return;
+#endif
+	}
+
+#define JAX_ASSERT(Exp) assert(Exp);
+
 }
 

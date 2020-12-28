@@ -1,3 +1,2 @@
 ﻿  main.cpp
-main.obj : error LNK2001: 无法解析的外部符号 "__declspec(dllimport) public: static wchar_t * Jax::JaxSystem::sm_sLogBuffer" (__imp_?sm_sLogBuffer@JaxSystem@Jax@@2PA_WA)
-..\..\bin\Test1_d.exe : fatal error LNK1120: 1 个无法解析的外部命令
+  Test1.vcxproj -> D:\c++\Jax\Demo\Test1\..\..\bin\Test1_d.exe
