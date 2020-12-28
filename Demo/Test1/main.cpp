@@ -1,12 +1,8 @@
 #include <JaxMemManager.h>
+#include <iostream>
 using namespace Jax;
-void Fun()
-{
-	char* k = JAX_NEW char[15];
-}
+using namespace std;
 int main()
 {
-	int* a = JAX_NEW int;
-	*a = 5;
-	Fun();
+	cout << '1' << endl;
 }

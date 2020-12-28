@@ -13,6 +13,67 @@
 
 namespace Jax
 {
+#ifdef USE_STL_TYPE_TRAIT
+#define HAS_TRIVIAl_CONSTRUCTOR(T) std::is_trivially_constructible<T>::value
+#define HAS_TRIVIAL_DESTRUCTOR(T) std::is_trivially_destructible<T>::value
+#define HAS_TRIVIAL_ASSIGN(T) std::is_trivially_assignable<T>::value
+#define HAS_TRIVIAL_COPY(T) std::is_trivially_copyable<T>::value
+#define IS_POD(T) std::is_pod<T>::value
+#define IS_ENUM(T) std::is_enum<T>::value
+#define IS_EMPTY(T) std::is_empty<T>::value
+
+	template<typename T> struct TIsFloatType {
+		enum {
+			Value = std::is_floating_point<T>::value
+		};
+	};
+
+	template<typename T> struct TIsIntegralType {
+		enum {
+			Value = std::is_integral<T>::value
+		};
+	};
+
+	template<typename T> struct TIsArithmeticType {
+		enum {
+			Value = std::is_arithmetic<T>::value
+		};
+	};
+
+	template<typename T> struct TIsPointerType {
+		enum {
+			Value = std::is_pointer<T>::value
+		};
+	};
+
+	template<typename T> struct TIsVoidType {
+		enum {
+			Value = std::is_void<T>::value
+		};
+	};
+
+	template<typename T> struct TIsPODType {
+		enum {
+			Value = IS_POD(T)
+		};
+	};
+
+	template<typename T> struct TIsFundamentalType {
+		enum {
+			Value = std::is_fundamental<T>::value
+		};
+	};
+
+	template<typename T> struct ValueBase
+	{
+		enum {
+			NeedsConstructor=!HAS_TRIVIAl_CONSTRUCTOR(T) && !TIsPODType<T>::Value
+		};
+		enum {
+			NeedsDestructor=!HAS_TRIVIAL_DESTRUCTOR(T) && !TIsPODType<T>::Value
+		};
+	};
+#endif
 	class JAXCORE_API JaxMemManager
 	{
 	public:
