@@ -18,10 +18,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JaxDataStruct", "JaxDataStr
 		{FCC12EF9-9452-48CC-A93D-7AD46A5DEA4F} = {FCC12EF9-9452-48CC-A93D-7AD46A5DEA4F}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test2", "Test2\Test2.vcxproj", "{21F64D1C-92A5-4114-8970-C34F7ED679B4}"
-	ProjectSection(ProjectDependencies) = postProject
-		{86AF698D-0A7C-40D4-B012-15F7C6DD67E5} = {86AF698D-0A7C-40D4-B012-15F7C6DD67E5}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test2", "Demo\Test2\Test2.vcxproj", "{21F64D1C-92A5-4114-8970-C34F7ED679B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
