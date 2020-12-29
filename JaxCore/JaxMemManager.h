@@ -172,3 +172,5 @@ FORCEINLINE void operator delete[](void* pAddr)
 }
 #endif // USE_CUSTOM_NEW
 
+#define JAXMAC_DELETE(p) if(p) {JAX_DELETE p;p=NULL;}
+#define JAXMAC_DELETEA(p) if(p) {JAX_DELETE []p;p=NULL;}

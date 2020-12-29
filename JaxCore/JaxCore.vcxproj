@@ -145,10 +145,12 @@
     <ClInclude Include="JaxMemManager.h" />
     <ClInclude Include="JaxSynchronize.h" />
     <ClInclude Include="JaxSystem.h" />
+    <ClInclude Include="JaxTimer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JaxMemManager.cpp" />
     <ClCompile Include="JaxSystem.cpp" />
+    <ClCompile Include="JaxTimer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

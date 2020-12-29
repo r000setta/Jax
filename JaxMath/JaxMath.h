@@ -54,4 +54,8 @@ namespace Jax
 		return !(n & (n - 1));
 	}
 
+	FORCEINLINE void JaxRandInit(int seed)
+	{
+		srand(seed);
+	}
 }

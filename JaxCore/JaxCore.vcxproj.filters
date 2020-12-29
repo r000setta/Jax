@@ -24,12 +24,18 @@
     <ClInclude Include="JaxSynchronize.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="JaxTimer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JaxSystem.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="JaxMemManager.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxTimer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
