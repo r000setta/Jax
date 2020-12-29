@@ -117,5 +117,46 @@ namespace Jax
 
 #define JAX_ASSERT(Exp) assert(Exp);
 
+	template<typename T>
+	FORCEINLINE T ABS(T t)
+	{
+		return t < 0 ? -t : t;
+	}
+
+	template<typename T>
+	FORCEINLINE T Min(T t0, T t1)
+	{
+		return t0 < t1 ? t0 : t1;
+	}
+
+	template<typename T>
+	FORCEINLINE T Max(T t0, T t1)
+	{
+		return t0 > t1 ? t0 : t1;
+	}
+
+	template<typename T>
+	FORCEINLINE T Clamp(T Value, T Max, T Min)
+	{
+		if (Value >= Max)
+		{
+			return Max;
+		}
+		if (Value <= Min)
+		{
+			return Min;
+		}
+		return Value;
+	}
+
+	template<typename T>
+	FORCEINLINE void Swap(T& t1, T& t2)
+	{
+		T tmp;
+		tmp = t1;
+		t1 = t2;
+		t2 = tmp;
+		T tmp;
+	}
 }
 
