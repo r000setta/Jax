@@ -1,9 +1,11 @@
 d:\c++\jax\jaxcore\debug\vc142.pdb
 d:\c++\jax\jaxcore\debug\vc142.idb
 d:\c++\jax\jaxcore\debug\jaxsystem.obj
+d:\c++\jax\jaxcore\debug\jaxtimer.obj
+d:\c++\jax\jaxcore\debug\jaxmemmanager.obj
+d:\c++\jax\jaxcore\.\debug\vcpkg.applocal.log
 d:\c++\jax\bin\jaxcore_d.lib
 d:\c++\jax\bin\jaxcore_d.exp
-d:\c++\jax\jaxcore\.\debug\vcpkg.applocal.log
 d:\c++\jax\bin\jaxcore_d.ilk
 d:\c++\jax\bin\jaxcore_d.dll
 d:\c++\jax\bin\jaxcore_d.pdb
@@ -12,6 +14,11 @@ d:\c++\jax\jaxcore\debug\jaxcore.tlog\cl.command.1.tlog
 d:\c++\jax\jaxcore\debug\jaxcore.tlog\cl.read.1.tlog
 d:\c++\jax\jaxcore\debug\jaxcore.tlog\cl.write.1.tlog
 d:\c++\jax\jaxcore\debug\jaxcore.tlog\jaxcore.write.1u.tlog
+d:\c++\jax\jaxcore\debug\jaxcore.tlog\link.18540.delete.1.tlog
+d:\c++\jax\jaxcore\debug\jaxcore.tlog\link.29196.delete.1.tlog
+d:\c++\jax\jaxcore\debug\jaxcore.tlog\link.35868.delete.1.tlog
+d:\c++\jax\jaxcore\debug\jaxcore.tlog\link.38844.delete.1.tlog
 d:\c++\jax\jaxcore\debug\jaxcore.tlog\link.command.1.tlog
+d:\c++\jax\jaxcore\debug\jaxcore.tlog\link.delete.1.tlog
 d:\c++\jax\jaxcore\debug\jaxcore.tlog\link.read.1.tlog
 d:\c++\jax\jaxcore\debug\jaxcore.tlog\link.write.1.tlog

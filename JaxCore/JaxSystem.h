@@ -115,6 +115,24 @@ namespace Jax
 #endif
 	}
 
+	FORCEINLINE int JaxStrCmp(const TCHAR* string1, const TCHAR* string2)
+	{
+#ifdef WINDOWS
+		return _tcscmp(string1, string2);
+#else
+		return;
+#endif // WINDOWS
+	}
+
+	FORCEINLINE void JaxScanf(TCHAR* buffer, const TCHAR* format, va_list pArgs)
+	{
+#ifdef WINDOWS
+		_stscanf_s(buffer, format, pArgs);
+#else
+		return;
+#endif // WINDOWS
+	}
+
 #define JAX_ASSERT(Exp) assert(Exp);
 
 	template<typename T>

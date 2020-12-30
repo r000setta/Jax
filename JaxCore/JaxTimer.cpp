@@ -1,5 +1,4 @@
 #include "JaxTimer.h"
-#include <mmsystem.h>
 
 namespace Jax
 {

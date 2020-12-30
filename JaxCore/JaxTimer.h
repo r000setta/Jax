@@ -1,5 +1,6 @@
 #pragma once
 #include "JaxSystem.h"
+#include <mmsystem.h>
 
 namespace Jax
 {
