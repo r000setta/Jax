@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="JaxArray.h" />
     <ClInclude Include="JaxContainer.h" />
+    <ClInclude Include="JaxMap.h" />
     <ClInclude Include="JaxString.h" />
   </ItemGroup>
   <ItemGroup>
@@ -103,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;JAXDATASTRUCT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\c++\Jax\JaxCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\c++\Jax\JaxMath;D:\c++\Jax\JaxCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <StringPooling>
       </StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
@@ -114,7 +115,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <OutputFile>$(OutDir)$(TargetName).dll</OutputFile>
       <AdditionalLibraryDirectories>D:\c++\Jax\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>JaxCore_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>JaxCore_d.lib;JaxMath_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
     </Link>

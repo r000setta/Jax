@@ -1,5 +1,7 @@
 #pragma once
 #include "JaxContainer.h"
+#include "JaxMath.h"
+
 namespace Jax
 {
 	class JAXDATASTRUCT_API JaxString
@@ -36,7 +38,8 @@ namespace Jax
 		const JaxString& operator+=(const JaxString& String);
 		const JaxString& operator+=(const TCHAR* String);
 
-
+		bool GetString(const JaxString& string, size_t find, bool isFront = true, bool isHaveFind = false);
+		bool GetString(const JaxString& string, TCHAR find, int findNum, bool isFront = true, bool isHaveFind = false);
 	protected:
 		TCHAR* m_pBuffer;
 	};
@@ -58,4 +61,5 @@ namespace Jax
 	JAXDATASTRUCT_API bool operator!=(const TCHAR* String1, const JaxString& String2);
 
 	JAXDATASTRUCT_API int StringToInt(const JaxString& String);
+	JAXDATASTRUCT_API JAXREAL StringToReal(const JaxString& String);
 }

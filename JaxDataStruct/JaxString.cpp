@@ -123,6 +123,71 @@ namespace Jax
 		}
 	}
 
+	bool JaxString::GetString(const JaxString& string, size_t find, bool isFront, bool isHaveFind)
+	{
+		if (find >= string.GetLength())
+		{
+			return false;
+		}
+		size_t length = 0;
+		size_t idx = 0;
+		if (isFront)
+		{
+			length = find;
+			idx = 0;
+		}
+		else
+		{
+			length = string.GetLength() - find - 1;
+			idx = find + 1;
+		}
+		if (isHaveFind)
+		{
+			length++;
+			if (!isFront)
+			{
+				idx--;
+			}
+		}
+		if (idx >= string.GetLength())
+		{
+			return false;
+		}
+		JAXMAC_DELETEA(m_pBuffer);
+		m_pBuffer = JAX_NEW TCHAR[length + 1];
+		JaxMemcpy(m_pBuffer, &string.m_pBuffer[idx], length, length + 1);
+		m_pBuffer[length] = _T('\0');
+		return true;
+	}
+
+
+	bool JaxString::GetString(const JaxString& string, TCHAR find, int findNum, bool isFront, bool isHaveFind)
+	{
+		if (findNum == 0)
+		{
+			return false;
+		}
+		size_t findNumTmp = 0;
+		int idx = -1;
+		for (size_t i = 0; i < string.GetLength(); ++i)
+		{
+			if (find == string.m_pBuffer[i])
+			{
+				findNumTmp++;
+				idx = i;
+			}
+			if (findNumTmp == findNum)
+			{
+				break;
+			}
+		}
+		if (idx == -1)
+		{
+			return false;
+		}
+		return GetString(string, idx, isFront, isHaveFind);
+	}
+
 	const JaxString& JaxString::operator+=(const TCHAR* String)
 	{
 		size_t len1 = GetLength();
@@ -299,4 +364,12 @@ namespace Jax
 		return i;
 	}
 
+	JAXREAL StringToReal(const JaxString& String)
+	{
+		JAXREAL f = 0.0f;
+		_stscanf_s(String.GetBuffer(), _T("%f"), &f);
+		return f;
+	}
+
+	
 }

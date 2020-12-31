@@ -26,5 +26,8 @@
     <ClCompile Include="JaxApplication.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="JaxCommand.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

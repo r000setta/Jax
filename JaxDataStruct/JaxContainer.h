@@ -8,6 +8,32 @@
 
 namespace Jax
 {
+	template<typename KEY,typename VALUE>
+	class MapElement :public JaxMemObject
+	{
+	public:
+		KEY key;
+		VALUE value;
+		void operator=(const MapElement<KEY, VALUE>& Element)
+		{
+			key = Element.key;
+			value = Element.value;
+		}
+
+		MapElement() {}
+		MapElement(const MapElement<KEY, VALUE>& Element)
+		{
+			key = Element.key;
+			value = Element.value;
+		}
+		MapElement(const KEY& _key, const VALUE& _value)
+		{
+			key = _key;
+			value = _value;
+		}
+		~MapElement() {}
+	};
+
 	template<typename T,JaxMemManagerFun MMFun=JaxMemObject::GetMemManager>
 	class JaxContainer :public JaxMemObject
 	{
