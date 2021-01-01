@@ -35,7 +35,7 @@ template<typename T, JaxMemManagerFun MMFun>
 	{
 		Delete(m_pBuffer, m_uiCurUse);
 		m_uiBufferNum = bufferNum;
-		m_pBuffer = this->New(bufferNum);
+		m_pBuffer = New(bufferNum);
 		if (!m_pBuffer)
 			return;
 		m_uiCurUse = m_uiBufferNum;
@@ -55,7 +55,7 @@ template<typename T, JaxMemManagerFun MMFun>
 		m_uiGrowBy = m_uiAllocNum * m_uiGrowBy;
 
 		T* pBuffer = NULL;
-		pBuffer = this->New(m_uiBufferNum * bufferNum);
+		pBuffer = New(m_uiBufferNum * bufferNum);
 		if (!pBuffer)
 			return;
 		if (pBuffer && m_uiCurUse)
@@ -90,7 +90,7 @@ template<typename T, JaxMemManagerFun MMFun>
 		Delete(m_pBuffer, m_uiCurUse);
 		m_uiBufferNum = Array.GetBufferNum();
 		m_uiCurUse = Array.GetNum();
-		m_pBuffer = this->New(m_uiBufferNum);
+		m_pBuffer = New(m_uiBufferNum);
 		if (!m_pBuffer)
 			return;
 		T* pBuufer = Array.GetBuffer();

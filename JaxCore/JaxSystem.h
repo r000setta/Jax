@@ -133,6 +133,24 @@ namespace Jax
 #endif // WINDOWS
 	}
 
+	FORCEINLINE void JaxLockedIncrement(long* refCount)
+	{
+#ifdef WINDOWS
+		_InterlockedIncrement(refCount);
+#else
+		return;
+#endif // WINDOWS
+	}
+
+	FORCEINLINE void JaxLockedDecrement(long* refCount)
+	{
+#ifdef WINDOWS
+		_InterlockedDecrement(refCount);
+#else
+		return;
+#endif
+	}
+
 #define JAX_ASSERT(Exp) assert(Exp);
 
 	template<typename T>

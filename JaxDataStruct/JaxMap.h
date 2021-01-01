@@ -67,7 +67,7 @@ namespace Jax
 	template<typename KEY, typename VALUE, JaxMemManagerFun MMFun>
 	inline void JaxMap<KEY, VALUE, MMFun>::SetBufferNum(size_t bufferNum)
 	{
-		if (!uiBufferNum)
+		if (!bufferNum)
 		{
 			Delete(m_pBuffer, m_uiCurUse);
 			m_uiBufferNum = bufferNum;
@@ -111,10 +111,10 @@ namespace Jax
 	template<typename KEY, typename VALUE, JaxMemManagerFun MMFun>
 	inline void JaxMap<KEY, VALUE, MMFun>::operator=(const JaxMap<KEY, VALUE, MMFun>& map)
 	{
-		if (m_uiBufferNum >= Map.GetNum())
+		if (m_uiBufferNum >= map.GetNum())
 		{
 			Clear();
-			m_uiCurUse = Map.GetNum();
+			m_uiCurUse = map.GetNum();
 			MapElement<KEY, VALUE>* pBuffer = map.GetBuffer();
 			for (size_t i = 0; i < m_uiCurUse; ++i)
 			{
@@ -333,7 +333,7 @@ namespace Jax
 		else
 		{
 			MapElement<KEY1, VALUE1>* pBuffer = Map.GetBuffer();
-			for (size_t i = m_uiCurUse; m < addNum + m_uiCurUse; ++i)
+			for (size_t i = m_uiCurUse; i < addNum + m_uiCurUse; ++i)
 			{
 				JAX_NEW(m_pBuffer + i) MapElement<KEY1, VALUE1>(pBuffer[begin]);
 				begin++;

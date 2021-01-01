@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Core">
+      <UniqueIdentifier>{9198d8e4-6b23-4712-ad1c-2d407eef30c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Stream">
+      <UniqueIdentifier>{f93f7418-1f9e-44c8-bcf5-fa055d9d33c0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="JaxReference.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxGraphic.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxPointer.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxRtti.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxObject.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxPriority.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxProperty.h">
+      <Filter>Core\Stream</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxName.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxResouceManager.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="JaxReference.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxObject.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxRtti.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxPriority.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

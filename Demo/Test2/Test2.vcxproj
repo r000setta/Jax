@@ -93,14 +93,14 @@
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\c++\Jax\JaxDataStruct;D:\c++\Jax\JaxCore;D:\c++\Jax\JaxMath</AdditionalIncludeDirectories>
+      <ConformanceMode>false</ConformanceMode>
+      <AdditionalIncludeDirectories>D:\c++\Jax\JaxGraphics;D:\c++\Jax\JaxDataStruct;D:\c++\Jax\JaxCore;D:\c++\Jax\JaxMath</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>D:\c++\Jax\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>JaxDataStruct_d.lib;JaxCore_d.lib;JaxMath_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>JaxDataStruct_d.lib;JaxCore_d.lib;JaxMath_d.lib;JaxGraphics_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

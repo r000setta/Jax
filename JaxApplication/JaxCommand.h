@@ -11,6 +11,7 @@ namespace Jax
 	public:
 		JaxCommand(int argNums, TCHAR** args);
 		JaxCommand(TCHAR* commandLine);
+		JaxCommand() {}
 		~JaxCommand();
 
 		bool GetName(const TCHAR* name);

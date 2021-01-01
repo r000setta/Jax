@@ -1,3 +1,2 @@
 ﻿  main.cpp
-D:\c++\Jax\Demo\Test1\main.cpp(7,2): error C2065: “JaxArray”: 未声明的标识符
-D:\c++\Jax\Demo\Test1\main.cpp(7,14): error C2062: 意外的类型“int”
+  Test1.vcxproj -> D:\c++\Jax\Demo\Test1\..\..\bin\Test1_d.exe
