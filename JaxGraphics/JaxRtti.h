@@ -3,12 +3,14 @@
 #include "JaxGraphic.h"
 #include "JaxMemManager.h"
 #include "JaxArray.h"
+#include "JaxProperty.h"
 #include "JaxPriority.h"
 
 namespace Jax
 {
 	class JaxObject;
 	typedef JaxObject* (*CreateObjectFun)();
+	class JaxProperty;
 
 #define DECLARE_RTTI \
 public:\
@@ -53,11 +55,19 @@ IMPLEMENT_PRIORITY(classname)
 			return m_pBase;
 		}
 
+		JaxProperty* GetProperty(size_t idx) const;
+		JaxProperty* GetProperty(const JaxString& propertyName) const;
+		size_t GetPropertyNum() const;
+		void AddProperty(JaxProperty* property);
+		void AddProperty(JaxRtti& rtti);
+		void ClearProperty();
+
 		bool IsDerived(const JaxRtti& Type) const;
 
 	private:
 		JaxString m_cRttiName;
 		JaxRtti* m_pBase;
+		JaxArray<JaxProperty *> m_PropertyArray;
 		CreateObjectFun m_CreateFun;
 	};
 }

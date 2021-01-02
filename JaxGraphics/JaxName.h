@@ -40,5 +40,9 @@ namespace Jax
 
 	DECLARE_PTR(JaxName);
 
+	class JaxStream;
+	class JAXGRAPHIC_API JaxUsedName
+	{
 
+	};
 }

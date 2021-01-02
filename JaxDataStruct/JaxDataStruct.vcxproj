@@ -28,9 +28,6 @@
     <ClCompile Include="JaxArray.cpp" />
     <ClCompile Include="JaxString.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="JaxArrays.inl" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

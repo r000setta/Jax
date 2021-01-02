@@ -36,6 +36,9 @@
     <ClInclude Include="JaxResouceManager.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="JaxStream.h">
+      <Filter>Core\Stream</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JaxReference.cpp">
@@ -49,6 +52,12 @@
     </ClCompile>
     <ClCompile Include="JaxPriority.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxProperty.cpp">
+      <Filter>Core\Stream</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxStream.cpp">
+      <Filter>Core\Stream</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

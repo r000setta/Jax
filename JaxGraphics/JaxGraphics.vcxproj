@@ -154,12 +154,15 @@
     <ClInclude Include="JaxReference.h" />
     <ClInclude Include="JaxResouceManager.h" />
     <ClInclude Include="JaxRtti.h" />
+    <ClInclude Include="JaxStream.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JaxObject.cpp" />
     <ClCompile Include="JaxPriority.cpp" />
+    <ClCompile Include="JaxProperty.cpp" />
     <ClCompile Include="JaxReference.cpp" />
     <ClCompile Include="JaxRtti.cpp" />
+    <ClCompile Include="JaxStream.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

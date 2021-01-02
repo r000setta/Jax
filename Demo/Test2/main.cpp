@@ -16,6 +16,8 @@ class A :public JaxReference
 public:
 	bool IsSameType(A* pObject) const;
 	bool IsDerived(A* pObject) const;
+
+	void getname() {}
 };
 
 IMPLEMENT_RTTI_NoParent_NoCreateFun(A)
@@ -73,8 +75,17 @@ int main()
 	cout << p3->IsDerived(p1) << endl;
 	cout << p3->IsDerived(p2) << endl;
 
-	cout << A::sm_Type.GetName().GetBuffer() << endl;
+	cout << (char*)A::sm_Type.GetName().GetBuffer() << endl;
 	printf("%ls\n", A::sm_Type.GetName().GetBuffer());
+
+	JAXMAC_DELETE(p1);
+	JAXMAC_DELETE(p2);
+	JAXMAC_DELETE(p3);
+
+	JaxArray<A*> a;
+	a.SetBufferNum(10);
+	a[0] = p1;
+	a[0]->getname();
 }
 
 bool A::IsDerived(A* pObject) const

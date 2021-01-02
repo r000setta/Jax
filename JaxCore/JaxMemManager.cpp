@@ -199,7 +199,7 @@ namespace Jax
 		pAddr -= sizeof(Block);
 		Block* pBlock = (Block*)pAddr;
 		RemoveBlock(pBlock);
-		JAX_ASSERT(pBlock->m_bIsArray = isArray);
+		JAX_ASSERT(pBlock->m_bIsArray == isArray);
 		JAX_ASSERT(m_uiNumBlocks > 0 && m_uiNumBytes >= pBlock->m_uiSize);
 		bool bAlignment = alignment > 0 ? true : false;
 		JAX_ASSERT(pBlock->m_bAlignment == bAlignment);
