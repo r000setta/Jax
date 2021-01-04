@@ -342,4 +342,206 @@ namespace Jax
 		}
 	}
 
+
+	template<typename KEY, typename VALUE,JaxMemManagerFun MMFun=JaxMemObject::GetMemManager>
+	class JaxMapOrder :public JaxMap<KEY, VALUE, MMFun>
+	{
+	public:
+		JaxMapOrder(size_t growBy = DEFAULT_GROWBY);
+		~JaxMapOrder();
+
+		template<typename KEY1,typename VALUE1>
+		void AddElement(const MapElememt<KEY1, VALUE1>& element);
+
+		void AddElememt(const KEY& key, const VALUE& value);
+		size_t Find(const KEY& key);
+
+	protected:
+		template<typename KEY1,typename VALUE1>
+		size_t Process(size_t idx0, size_t idx1, const MapElement<KEY1, VALUE1>& element);
+
+		size_t FindElement(size_t idx0, size_t idx1, const KEY& key) const;
+	};
+
+	template<typename KEY, typename VALUE,JaxMemManagerFun MMFun>
+	inline JaxMapOrder<KEY,VALUE, MMFun>::JaxMapOrder(size_t growBy)
+	{
+	}
+
+	template<typename KEY, typename VALUE,JaxMemManagerFun MMFun>
+	inline JaxMapOrder<KEY,VALUE,MMFun>::~JaxMapOrder()
+	{
+	}
+
+	template<typename KEY, typename VALUE, JaxMemManagerFun MMFun>
+	inline void JaxMapOrder<KEY, VALUE, MMFun>::AddElememt(const KEY& key, const VALUE& value)
+	{
+		MapElement<KEY, VALUE> element{ key,value };
+		AddElement(element);
+	}
+
+	template<typename KEY, typename VALUE, JaxMemManagerFun MMFun>
+	inline size_t JaxMapOrder<KEY, VALUE, MMFun>::Find(const KEY& key)
+	{
+		if (m_uiCurUse)
+		{
+			if (m_pBuffer[0].key > key)
+			{
+				return m_uiCurUse;
+			}
+			else if (key > m_pBuffer[m_uiCurUse - 1].key)
+			{
+				return m_uiCurUse;
+			}
+			else
+			{
+				return FindElement(0, m_uiCurUse - 1, key);
+			}
+		}
+		else
+		{
+			return m_uiCurUse;
+		}
+	}
+
+	template<typename KEY, typename VALUE, JaxMemManagerFun MMFun>
+	inline size_t JaxMapOrder<KEY, VALUE, MMFun>::FindElement(size_t idx0, size_t idx1, const KEY& key) const
+	{
+		if (idx0 == idx1)
+		{
+			if (m_pBuffer[idx0].key == key)
+			{
+				return idx0;
+			}
+			else
+			{
+				return m_uiCurUse;
+			}
+		}
+		else if (idx1 - idx0 == 1)
+		{
+			if (m_pBuffer[idx0].key == key)
+			{
+				return idx0;
+			}
+			else if (m_pBuffer[idx1].key == key)
+			{
+				return idx1;
+			}
+			else
+			{
+				return m_uiCurUse;
+			}
+		}
+		else
+		{
+			size_t idx = (idx0 + idx1) >> 1;
+			if (m_pBuffer[idx].key == key)
+			{
+				return idx;
+			}
+			else if (m_pBuffer[idx].key > key)
+			{
+				return FindElement(idx0, idx, key);
+			}
+			else
+			{
+				return FindElement(idx, idx1, key);
+			}
+		}
+	}
+
+	template<typename KEY,typename VALUE, JaxMemManagerFun MMFun>
+	template<typename KEY1, typename VALUE1>
+	inline void JaxMapOrder<KEY,VALUE,MMFun>::AddElement(const MapElememt<KEY1, VALUE1>& element)
+	{
+		if (Find(element.key) != m_uiCurUse)
+		{
+			return;
+		}
+
+		if (m_uiCurUse == m_uiBufferNum)
+		{
+			if (!m_uiGrowBy)
+			{
+				return;
+			}
+			AddBufferNum(m_uiGrowBy);
+		}
+
+		size_t idx;
+		if (m_uiCurUse == 0)
+		{
+			idx = 0;
+		}
+		else if (m_uiCurUse == 1)
+		{
+			if (m_pBuffer[0].key > element.key)
+			{
+				idx = 0;
+			}
+			else
+			{
+				idx = 1;
+			}
+		}
+		else if (m_pBuffer[0].key > element.key)
+		{
+			idx = 0;
+		}
+		else if (element.key > m_pBuffer[m_uiCurUse - 1].key)
+		{
+			idx = m_uiCurUse;
+		}
+		else
+		{
+			idx = Process(0, m_uiCurUse - 1, element);
+		}
+		if (m_uiCurUse == idx)
+		{
+			JAX_NEW(m_pBuffer + idx) MapElememt<KEY, VALUE>(element);
+		}
+		else
+		{
+			JAX_NEW(m_pBuffer + m_uiCurUse) MapElememt<KEY, VALUE>(m_pBuffer[m_uiCurUse - 1]);
+			for (size_t i = m_uiCurUse - 2; i >= idx; --i)
+			{
+				m_pBuffer[i + 1] = m_pBuffer[i];
+			}
+			m_pBuffer[idx] = element;
+		}
+		m_uiCurUse++;
+	}
+
+	template<typename KEY, typename VALUE, JaxMemManagerFun MMFun>
+	template<typename KEY1, typename VALUE1>
+	inline size_t JaxMapOrder<KEY, VALUE, MMFun>::Process(size_t idx0, size_t idx1, const MapElement<KEY1, VALUE1>& element)
+	{
+		if (idx0 == idx1)
+		{
+			return idx0;
+		}
+		else if (idx1 - idx0 == 1)
+		{
+			return idx1;
+		}
+		else
+		{
+			size_t idx = (idx0 + idx + 1) >> 1;
+			if (m_pBuffer[idx].key == element.key)
+			{
+				return idx;
+			}
+			else if (m_pBuffer[idx].key > element.key)
+			{
+				return Process(idx0, idx, element);
+			}
+			else
+			{
+				return Process(idx, idx1, element);
+			}
+		}
+	}
+
+
 }

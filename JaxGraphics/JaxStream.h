@@ -11,20 +11,52 @@ namespace Jax
 	class JAXGRAPHIC_API JaxStream
 	{
 	public:
+		enum
+		{
+			AT_SAVE,
+			AT_LOAD,
+		};
 		JaxStream();
 		~JaxStream();
+		void f() {}
 
 		bool Read(void* buffer, size_t size);
 		bool Write(const void* buffer, size_t size);
+		bool WriteString(const JaxString& string);
+		bool ReadString(JaxString& string);
+
+		bool NewLoadFromBuffer(unsigned char* buffer, unsigned int size);
 
 		bool NewSave(const TCHAR* const fileName);
 		bool NewLoad(const TCHAR* const fileName);
-		
+
+		size_t GetStreamFlag() const
+		{
+			return m_uiStreamFlag;
+		}
+
+		void SetStreamFlag(size_t streamFlag)
+		{
+			m_uiStreamFlag = streamFlag;
+		}
+
+		void AddBufferSize(size_t size)
+		{
+			m_uiArchivePropertySize += size;
+		}
+
+
+	protected:
+		size_t m_uiStreamFlag;
+		size_t m_uiArchivePropertySize;
 	private:
 		unsigned char* m_pcCurBufPtr;
 		unsigned char* m_pcBuffer;
+		static size_t sm_uiCurVersion;
 		size_t m_uiBufferSize;
+		size_t m_uiVersion;
 		JaxArray<JaxObject*> m_pObjectArray;
+		JaxMap<JaxObject*, JaxObject*> m_pLoadMap;
 	};
 
 	struct ObjectPropertyTable

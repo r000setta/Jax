@@ -52,8 +52,11 @@ namespace Jax
 		bool IsSameType(const JaxRtti& type) const;
 		bool IsDerived(const JaxRtti& type) const;
 
+		JaxObject* GetNoGCInstance(const JaxString& rttiName);
+
 	protected:
 		size_t m_uiObjectID;
+		
 
 	public:
 		size_t m_uiFlag;

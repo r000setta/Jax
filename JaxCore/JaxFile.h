@@ -43,7 +43,7 @@ namespace Jax
 
 	protected:
 		static TCHAR sm_openMode[OM_MAX][5];
-		static size_t m_uiSeekFlag[1];
+		static size_t m_uiSeekFlag[];
 		FILE* m_pFileHandle;
 		size_t m_uiOpenMode;
 		size_t m_uiFileSize;

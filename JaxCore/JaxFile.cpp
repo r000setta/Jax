@@ -2,6 +2,21 @@
 
 namespace Jax
 {
+	TCHAR JaxFile::sm_openMode[OM_MAX][5] =
+	{
+		_T("rb"),
+		_T("wb"),
+		_T("rt"),
+		_T("wt"),
+	};
+
+	size_t JaxFile::m_uiSeekFlag[] =
+	{
+		SEEK_CUR,
+		SEEK_END,
+		SEEK_SET
+	};
+
 	JaxFile::JaxFile() :m_pFileHandle(NULL),
 		m_uiOpenMode(0), m_uiFileSize(0) {}
 

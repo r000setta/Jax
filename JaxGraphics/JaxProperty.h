@@ -1,5 +1,6 @@
 #pragma once
 #include "JaxRtti.h"
+#include "JaxStream.h"
 #include "JaxSystem.h"
 #include "JaxArray.h"
 #include "JaxMap.h"
@@ -53,6 +54,8 @@ namespace Jax
 		{
 			return (void*)(((unsigned char*)pObj) + m_uiElementOffset);
 		}
+
+		virtual bool Archive(JaxStream& stream, void* pObj) = 0;
 
 		virtual JaxProperty* GetInstance() = 0;
 
@@ -115,9 +118,31 @@ namespace Jax
 			return true;
 		}
 
+		virtual bool Archive(JaxStream& stream, void* pObj)
+		{
+			size_t streamFlag = stream.GetStreamFlag();
+			if (streamFlag == JaxStream::AT_SAVE)
+			{
+				T* valueAddress = *(T**)GetValueAddress(pObj);
+				if (m_uiDataNum > 0)
+				{
+					stream.Write(valueAddress, m_uiDataNum * sizeof(T));
+				}
+				else
+				{
+					void* numOffset = (void*)(((unsigned char*)pObj) + m_uiElementOffset);
+					NumType num = *(NumType*)numOffset;
+					stream.Write(numOffset, sizeof(NumType));
+					stream.Write(valueAddress, num * sizeof(T));
+				}
+			}
+			return true;
+		}
+
 	protected:
 		bool m_bDynamicCreate;
 		size_t m_uiDataNum;
 		size_t m_uiNumElementOffset;
-	};	
+	};
+
 }

@@ -86,5 +86,9 @@ namespace Jax
 	{
 		return GetType().IsDerived(type);
 	}
+	JaxObject* JaxObject::GetNoGCInstance(const JaxString& rttiName)
+	{
+		size_t i=sm_cl
+	}
 }
 
