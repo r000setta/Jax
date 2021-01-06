@@ -15,6 +15,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test1", "Demo\Test1\Test1.v
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JaxDataStruct", "JaxDataStruct\JaxDataStruct.vcxproj", "{86AF698D-0A7C-40D4-B012-15F7C6DD67E5}"
 	ProjectSection(ProjectDependencies) = postProject
+		{BBEF18C1-2862-4AAE-B8C1-B17FD0E7D1C9} = {BBEF18C1-2862-4AAE-B8C1-B17FD0E7D1C9}
 		{FCC12EF9-9452-48CC-A93D-7AD46A5DEA4F} = {FCC12EF9-9452-48CC-A93D-7AD46A5DEA4F}
 	EndProjectSection
 EndProject
@@ -26,12 +27,20 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test2", "Demo\Test2\Test2.v
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JaxMath", "JaxMath\JaxMath.vcxproj", "{BBEF18C1-2862-4AAE-B8C1-B17FD0E7D1C9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FCC12EF9-9452-48CC-A93D-7AD46A5DEA4F} = {FCC12EF9-9452-48CC-A93D-7AD46A5DEA4F}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JaxApplication", "JaxApplication\JaxApplication.vcxproj", "{0DE18BA6-46DB-420D-8E77-5C6C326C1EB5}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ApplicationTest", "Demo\ApplicationTest\ApplicationTest.vcxproj", "{A453DCDB-6355-485E-8AA8-5C3C3E8F7612}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JaxGraphics", "JaxGraphics\JaxGraphics.vcxproj", "{E57EBEB4-9804-4293-8136-E55BD116D64B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{86AF698D-0A7C-40D4-B012-15F7C6DD67E5} = {86AF698D-0A7C-40D4-B012-15F7C6DD67E5}
+		{BBEF18C1-2862-4AAE-B8C1-B17FD0E7D1C9} = {BBEF18C1-2862-4AAE-B8C1-B17FD0E7D1C9}
+		{FCC12EF9-9452-48CC-A93D-7AD46A5DEA4F} = {FCC12EF9-9452-48CC-A93D-7AD46A5DEA4F}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DataStructTest", "Demo\DataStructTest\DataStructTest.vcxproj", "{9637A18F-B685-4A1E-B358-E940C11DED8F}"
 EndProject

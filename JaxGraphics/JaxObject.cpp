@@ -1,8 +1,12 @@
 #include "JaxObject.h"
-
+#include "JaxStream.h"
+#include "JaxProperty.h"
 namespace Jax
 {
-	IMPLEMENT_RTTI_NoParent_NoCreateFun(JaxObject);
+	//IMPLEMENT_RTTI_NoParent_NoCreateFun(JaxObject);
+	JaxRtti JaxObject::sm_Type(_T("JaxObject"), NULL, NULL); 
+	JaxPriority JaxObject::sm_Priority;
+	JaxMapOrder<JaxUsedName, FactoryFunction> JaxObject::sm_ClassFactory;
 
 	JaxFastObjectManager::JaxFastObjectManager()
 	{
@@ -86,9 +90,16 @@ namespace Jax
 	{
 		return GetType().IsDerived(type);
 	}
+
 	JaxObject* JaxObject::GetNoGCInstance(const JaxString& rttiName)
 	{
-		size_t i=sm_cl
+		size_t i = sm_ClassFactory.Find(rttiName);
+		if (i == sm_ClassFactory.GetNum())
+		{
+			return NULL;
+		}
+		JaxObject* object = sm_ClassFactory[i].value();
+		return object;
 	}
 }
 

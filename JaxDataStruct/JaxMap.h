@@ -3,13 +3,13 @@
 
 namespace Jax
 {
-	template<typename KEY,typename VALUE,JaxMemManagerFun MMFun=JaxMemObject::GetMemManager>
-	class JaxMap :public JaxContainer<MapElement<KEY,VALUE>,MMFun>
+	template<typename KEY, typename VALUE, JaxMemManagerFun MMFun = JaxMemObject::GetMemManager>
+	class JaxMap :public JaxContainer<MapElement<KEY, VALUE>, MMFun>
 	{
 	public:
 		enum
 		{
-			DEFAULT_GROWBY=10
+			DEFAULT_GROWBY = 10
 		};
 		JaxMap(size_t growBy = DEFAULT_GROWBY);
 		~JaxMap();
@@ -23,16 +23,16 @@ namespace Jax
 		FORCEINLINE MapElement<KEY, VALUE>* GetBuffer() const;
 		FORCEINLINE void SetGrowBy(size_t growBy);
 
-		template<typename KEY1,typename VALUE1>
+		template<typename KEY1, typename VALUE1>
 		void AddElement(const MapElement<KEY1, VALUE1>& Element);
 		void AddElement(const KEY& Key, const VALUE& Value);
 
-		template<typename KEY1,typename VALUE1,JaxMemManagerFun MMFun1>
+		template<typename KEY1, typename VALUE1, JaxMemManagerFun MMFun1>
 		void AddElement(const JaxMap<KEY1, VALUE1, MMFun1>& Map, size_t begin, size_t end);
 
 		MapElement<KEY, VALUE>& operator[](size_t i) const;
 		void Clear();
-		
+
 		FORCEINLINE size_t GetSize() const;
 		void Erase(size_t i);
 		void Erase(size_t begin, size_t end);
@@ -46,8 +46,8 @@ namespace Jax
 		size_t m_uiCurUse;
 		size_t m_uiBufferNum;
 		size_t m_uiAllocNum;
-	}
-	;
+	};
+
 	template<typename KEY, typename VALUE, JaxMemManagerFun MMFun>
 	inline JaxMap<KEY, VALUE, MMFun>::JaxMap(size_t growBy)
 	{
@@ -71,7 +71,7 @@ namespace Jax
 		{
 			Delete(m_pBuffer, m_uiCurUse);
 			m_uiBufferNum = bufferNum;
-		
+
 			m_pBuffer = New(bufferNum);
 			if (!m_pBuffer)
 				return;
@@ -249,7 +249,7 @@ namespace Jax
 		size_t i = 0;
 		for (i = 0; i < m_uiCurUse; ++i)
 		{
-			if (m_pBuffer[i].Key == key)
+			if (m_pBuffer[i].key == key)
 			{
 				break;
 			}
@@ -343,33 +343,33 @@ namespace Jax
 	}
 
 
-	template<typename KEY, typename VALUE,JaxMemManagerFun MMFun=JaxMemObject::GetMemManager>
-	class JaxMapOrder :public JaxMap<KEY, VALUE, MMFun>
+	template<typename KEY, typename VALUE, JaxMemManagerFun MMFun = JaxMemObject::GetMemManager>
+	class JaxMapOrder : public JaxMap<KEY, VALUE, MMFun>
 	{
 	public:
 		JaxMapOrder(size_t growBy = DEFAULT_GROWBY);
 		~JaxMapOrder();
 
-		template<typename KEY1,typename VALUE1>
-		void AddElement(const MapElememt<KEY1, VALUE1>& element);
+		template<typename KEY1, typename VALUE1>
+		void AddElement(const MapElement<KEY1, VALUE1>& element);
 
 		void AddElememt(const KEY& key, const VALUE& value);
-		size_t Find(const KEY& key);
+		size_t Find(const KEY& key) const;
 
 	protected:
-		template<typename KEY1,typename VALUE1>
+		template<typename KEY1, typename VALUE1>
 		size_t Process(size_t idx0, size_t idx1, const MapElement<KEY1, VALUE1>& element);
 
 		size_t FindElement(size_t idx0, size_t idx1, const KEY& key) const;
 	};
 
-	template<typename KEY, typename VALUE,JaxMemManagerFun MMFun>
-	inline JaxMapOrder<KEY,VALUE, MMFun>::JaxMapOrder(size_t growBy)
+	template<typename KEY, typename VALUE, JaxMemManagerFun MMFun>
+	inline JaxMapOrder<KEY, VALUE, MMFun>::JaxMapOrder(size_t growBy)
 	{
 	}
 
-	template<typename KEY, typename VALUE,JaxMemManagerFun MMFun>
-	inline JaxMapOrder<KEY,VALUE,MMFun>::~JaxMapOrder()
+	template<typename KEY, typename VALUE, JaxMemManagerFun MMFun>
+	inline JaxMapOrder<KEY, VALUE, MMFun>::~JaxMapOrder()
 	{
 	}
 
@@ -381,7 +381,7 @@ namespace Jax
 	}
 
 	template<typename KEY, typename VALUE, JaxMemManagerFun MMFun>
-	inline size_t JaxMapOrder<KEY, VALUE, MMFun>::Find(const KEY& key)
+	inline size_t JaxMapOrder<KEY, VALUE, MMFun>::Find(const KEY& key) const
 	{
 		if (m_uiCurUse)
 		{
@@ -451,65 +451,63 @@ namespace Jax
 		}
 	}
 
-	template<typename KEY,typename VALUE, JaxMemManagerFun MMFun>
-	template<typename KEY1, typename VALUE1>
-	inline void JaxMapOrder<KEY,VALUE,MMFun>::AddElement(const MapElememt<KEY1, VALUE1>& element)
+	template<class KEY, class VALUE, JaxMemManagerFun MMFun>
+	template<class KEY1, class VALUE1>
+	void JaxMapOrder<KEY, VALUE, MMFun>::AddElement(const MapElement<KEY1, VALUE1>& Element)
 	{
-		if (Find(element.key) != m_uiCurUse)
-		{
+		if (Find(Element.key) != m_uiCurUse)
 			return;
-		}
-
 		if (m_uiCurUse == m_uiBufferNum)
 		{
 			if (!m_uiGrowBy)
-			{
 				return;
-			}
 			AddBufferNum(m_uiGrowBy);
 		}
 
-		size_t idx;
+		unsigned int uiIndex;
 		if (m_uiCurUse == 0)
 		{
-			idx = 0;
+			uiIndex = 0;
 		}
 		else if (m_uiCurUse == 1)
 		{
-			if (m_pBuffer[0].key > element.key)
+			if (m_pBuffer[0].key > Element.key)
 			{
-				idx = 0;
+				uiIndex = 0;
 			}
 			else
 			{
-				idx = 1;
+				uiIndex = 1;
 			}
 		}
-		else if (m_pBuffer[0].key > element.key)
+		else if (m_pBuffer[0].key > Element.key)
 		{
-			idx = 0;
+			uiIndex = 0;
 		}
-		else if (element.key > m_pBuffer[m_uiCurUse - 1].key)
+		else if (Element.key > m_pBuffer[m_uiCurUse - 1].key)
 		{
-			idx = m_uiCurUse;
-		}
-		else
-		{
-			idx = Process(0, m_uiCurUse - 1, element);
-		}
-		if (m_uiCurUse == idx)
-		{
-			JAX_NEW(m_pBuffer + idx) MapElememt<KEY, VALUE>(element);
+			uiIndex = m_uiCurUse;
 		}
 		else
 		{
-			JAX_NEW(m_pBuffer + m_uiCurUse) MapElememt<KEY, VALUE>(m_pBuffer[m_uiCurUse - 1]);
-			for (size_t i = m_uiCurUse - 2; i >= idx; --i)
+			uiIndex = Process(0, m_uiCurUse - 1, Element);
+		}
+		if (m_uiCurUse == uiIndex)
+		{
+			JAX_NEW(m_pBuffer + uiIndex) MapElement<KEY, VALUE>(Element);
+
+		}
+		else
+		{
+			JAX_NEW(m_pBuffer + m_uiCurUse) MapElement<KEY, VALUE>(m_pBuffer[m_uiCurUse - 1]);
+			for (int i = (int)m_uiCurUse - 2; i >= (int)uiIndex; i--)
 			{
 				m_pBuffer[i + 1] = m_pBuffer[i];
+
 			}
-			m_pBuffer[idx] = element;
+			m_pBuffer[uiIndex] = Element;
 		}
+
 		m_uiCurUse++;
 	}
 
@@ -527,7 +525,7 @@ namespace Jax
 		}
 		else
 		{
-			size_t idx = (idx0 + idx + 1) >> 1;
+			size_t idx = (idx0 + idx1) >> 1;
 			if (m_pBuffer[idx].key == element.key)
 			{
 				return idx;
@@ -542,6 +540,4 @@ namespace Jax
 			}
 		}
 	}
-
-
 }

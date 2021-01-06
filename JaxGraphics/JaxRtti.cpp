@@ -1,5 +1,5 @@
 #include "JaxRtti.h"
-
+#include "JaxProperty.h"
 namespace Jax
 {
 	JaxRtti::JaxRtti(const TCHAR* pRttiName, JaxRtti* pBase, CreateObjectFun COF) :m_cRttiName(pRttiName),m_pBase(pBase), m_CreateFun(COF) {}

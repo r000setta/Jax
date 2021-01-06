@@ -27,6 +27,12 @@ namespace Jax
 		{
 			return JaxStrlen(m_pBuffer);
 		}
+
+		FORCEINLINE size_t GetNameCode() const
+		{
+			return 0;
+		}
+
 		void SetTCHARBufferNum(size_t length);
 		void Clear();
 		
@@ -40,6 +46,7 @@ namespace Jax
 
 		bool GetString(const JaxString& string, size_t find, bool isFront = true, bool isHaveFind = false);
 		bool GetString(const JaxString& string, TCHAR find, int findNum, bool isFront = true, bool isHaveFind = false);
+
 	protected:
 		TCHAR* m_pBuffer;
 	};

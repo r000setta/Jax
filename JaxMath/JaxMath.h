@@ -58,4 +58,8 @@ namespace Jax
 	{
 		srand(seed);
 	}
+
+	bool JAXMATH_API JaxInitMath();
+	void JAXMATH_API JaxInitCRCTable();
+	unsigned int JAXMATH_API CRC32Compute(const void* data, size_t size);
 }

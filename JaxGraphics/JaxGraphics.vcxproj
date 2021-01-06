@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -28,7 +28,7 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
-    <UseDebugLibraries>true</UseDebugLibraries>
+    <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -88,16 +88,23 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;JAXGRAPHIC_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>
+      </SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;JAXGRAPHIC_EXPORTS</PreprocessorDefinitions>
       <ConformanceMode>false</ConformanceMode>
       <AdditionalIncludeDirectories>D:\c++\Jax\JaxMath;D:\c++\Jax\JaxDataStruct;D:\c++\Jax\JaxCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>D:\c++\Jax\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>JaxCore_d.lib;JaxDataStruct_d.lib;JaxMath_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>$(OutDir)$(TargetName).dll</OutputFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -145,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="JaxCustomArchiveObject.h" />
     <ClInclude Include="JaxGraphic.h" />
     <ClInclude Include="JaxName.h" />
     <ClInclude Include="JaxObject.h" />
@@ -155,12 +163,16 @@
     <ClInclude Include="JaxResouceManager.h" />
     <ClInclude Include="JaxRtti.h" />
     <ClInclude Include="JaxStream.h" />
+    <ClInclude Include="JaxType.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="JaxCustomArchiveObject.cpp" />
+    <ClCompile Include="JaxName.cpp" />
     <ClCompile Include="JaxObject.cpp" />
     <ClCompile Include="JaxPriority.cpp" />
     <ClCompile Include="JaxProperty.cpp" />
     <ClCompile Include="JaxReference.cpp" />
+    <ClCompile Include="JaxResouceManager.cpp" />
     <ClCompile Include="JaxRtti.cpp" />
     <ClCompile Include="JaxStream.cpp" />
   </ItemGroup>

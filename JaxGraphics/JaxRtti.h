@@ -3,8 +3,6 @@
 #include "JaxGraphic.h"
 #include "JaxMemManager.h"
 #include "JaxArray.h"
-#include "JaxProperty.h"
-#include "JaxPriority.h"
 
 namespace Jax
 {
@@ -13,26 +11,26 @@ namespace Jax
 	class JaxProperty;
 
 #define DECLARE_RTTI \
-public:\
+public: \
 virtual JaxRtti& GetType() const { return sm_Type; } \
-static JaxRtti sm_Type;\
+static JaxRtti sm_Type; \
 static JaxPriority sm_Priority;
 
 #define IMPLEMENT_RTTI(classname,baseclassname) \
 JaxRtti classname:sm_Type(_T(#classname),&baseclassname::sm_Type,classname::FactoryFunc);\
-IMPLEMENT_PRIORITY(classname)
+JaxPriority classname::sm_Priority;
 
 #define IMPLEMENT_RTTI_NoCreateFun(classname,baseclassname)\
 JaxRtti classname::sm_Type(_T(#classname),&baseclassname::sm_Type,NULL);\
-IMPLEMENT_PRIORITY(classname)
+JaxPriority classname::sm_Priority;
 
 #define IMPLEMENT_RTTI_NoParent(classname)\
 JaxRtti classname::sm_Type(_T(#classname),NULL,classname::FactoryFunc);\
-IMPLEMENT_PRIORITY(classname)
+JaxPriority classname::sm_Priority;
 
 #define IMPLEMENT_RTTI_NoParent_NoCreateFun(classname) \
-JaxRtti classname::sm_Type(_T(#classname),NULL,NULL);\
-IMPLEMENT_PRIORITY(classname)
+JaxRtti classname::sm_Type(_T(#classname),NULL,NULL); \
+JaxPriority classname::sm_Priority;
 
 	class JAXGRAPHIC_API JaxRtti :public JaxMemObject
 	{

@@ -39,6 +39,12 @@
     <ClInclude Include="JaxStream.h">
       <Filter>Core\Stream</Filter>
     </ClInclude>
+    <ClInclude Include="JaxType.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxCustomArchiveObject.h">
+      <Filter>Core\Stream</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JaxReference.cpp">
@@ -57,6 +63,15 @@
       <Filter>Core\Stream</Filter>
     </ClCompile>
     <ClCompile Include="JaxStream.cpp">
+      <Filter>Core\Stream</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxCustomArchiveObject.cpp">
+      <Filter>Core\Stream</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxName.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxResouceManager.cpp">
       <Filter>Core\Stream</Filter>
     </ClCompile>
   </ItemGroup>

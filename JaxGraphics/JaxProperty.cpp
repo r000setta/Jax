@@ -5,7 +5,7 @@ namespace Jax
 	JaxProperty::JaxProperty() :m_pRttiOwner(NULL),
 		m_Name(NULL),m_uiElementOffset(0), m_uiFlag(0) {}
 
-	JaxProperty::JaxProperty(JaxRtti& owner, const JaxString& name, size_t elementOffset, size_t flag) : m_pRttiOwner(&owner),
+	JaxProperty::JaxProperty(JaxRtti& owner, const JaxUsedName& name, size_t elementOffset, size_t flag) : m_pRttiOwner(&owner),
 		m_Name(name), m_uiElementOffset(elementOffset), m_uiFlag(flag) {}
 
 	JaxProperty::~JaxProperty()
@@ -27,6 +27,16 @@ namespace Jax
 		m_uiFlag = flag;
 	}
 
-
+	bool JaxProperty::Clone(JaxProperty* p)
+	{
+		if ((p->GetRtti() == GetRtti()))
+		{
+			m_Name = p->m_Name;
+			m_uiFlag = p->m_uiFlag;
+			m_uiElementOffset = p->m_uiElementOffset;
+			return true;
+		}
+		return false;
+	}
 }
 

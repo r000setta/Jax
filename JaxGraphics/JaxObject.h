@@ -1,12 +1,14 @@
 #pragma once
 #include "JaxSystem.h"
+#include "JaxReference.h"
+#include "JaxPriority.h"
 #include "JaxRtti.h"
 #include "JaxMap.h"
 #include "JaxString.h"
-#include "JaxReference.h"
-
+#include "JaxName.h"
 namespace Jax
 {
+
 	class JaxObject;
 	typedef JaxObject* (*FactoryFunction)();
 	class JaxFastObjectManager
@@ -33,6 +35,8 @@ namespace Jax
 	class JAXGRAPHIC_API JaxObject :public JaxReference, public JaxMemObject
 	{
 	public:
+		friend class JaxStream;
+
 		friend class JaxFastObjectManager;
 		static JaxFastObjectManager& GetObjectManager()
 		{
@@ -45,20 +49,50 @@ namespace Jax
 		JaxObject& operator=(const JaxObject& object);
 		JaxObject();
 
-		DECLARE_RTTI
+		//DECLARE_RTTI
+	public: 
+		virtual JaxRtti& GetType() const { return sm_Type; }
+		static JaxRtti sm_Type; 
+		static JaxPriority sm_Priority;
 
 		bool IsSameType(const JaxObject* pObject) const;
 		bool IsDerived(const JaxObject* pObject) const;
 		bool IsSameType(const JaxRtti& type) const;
 		bool IsDerived(const JaxRtti& type) const;
 
-		JaxObject* GetNoGCInstance(const JaxString& rttiName);
 
 	protected:
 		size_t m_uiObjectID;
-		
+		static JaxObject* GetNoGCInstance(const JaxString& rttiName);
+		static JaxMapOrder<JaxUsedName, FactoryFunction> sm_ClassFactory;
 
 	public:
 		size_t m_uiFlag;
 	};
+
+	DECLARE_PTR(JaxObject);
+	JAXTYPE_MARCO(JaxObject);
+	template<typename T>
+	T* StaticCast(JaxObject* obj)
+	{
+		return (T*)obj;
+	}
+
+	template<typename T>
+	const T* StaticCast(const JaxObject* obj)
+	{
+		return (const T*)obj;
+	}
+
+	template<typename T>
+	T* DynamicCast(JaxObject* obj)
+	{
+		return obj && obj->IsDerived(T::sm_Type) ? (T*)obj : NULL;
+	}
+
+	template<typename T>
+	const T* DynamicCast(const JaxObject* obj)
+	{
+		return obj && obj->IsDerived(T::sm_Type) ? (const T*)obj : NULL;
+	}
 }

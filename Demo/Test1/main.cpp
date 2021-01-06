@@ -1,8 +1,6 @@
-#include <JaxMemManager.h>
-#include <iostream>
+#include <JaxMap.h>
 using namespace Jax;
-using namespace std;
 int main()
 {
-	cout << '1' << endl;
+	JaxMapOrder<int, int> mp;
 }
