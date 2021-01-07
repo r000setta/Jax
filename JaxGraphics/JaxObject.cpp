@@ -3,9 +3,9 @@
 #include "JaxProperty.h"
 namespace Jax
 {
-	//IMPLEMENT_RTTI_NoParent_NoCreateFun(JaxObject);
-	JaxRtti JaxObject::sm_Type(_T("JaxObject"), NULL, NULL); 
-	JaxPriority JaxObject::sm_Priority;
+	IMPLEMENT_RTTI_NoParent_NoCreateFun(JaxObject);
+	//JaxRtti JaxObject::sm_Type(_T("JaxObject"), NULL, NULL); 
+	//JaxPriority JaxObject::sm_Priority;
 	JaxMapOrder<JaxUsedName, FactoryFunction> JaxObject::sm_ClassFactory;
 
 	JaxFastObjectManager::JaxFastObjectManager()

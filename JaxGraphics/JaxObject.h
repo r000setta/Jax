@@ -11,6 +11,7 @@ namespace Jax
 
 	class JaxObject;
 	typedef JaxObject* (*FactoryFunction)();
+	class JaxStream;
 	class JaxFastObjectManager
 	{
 	public:
@@ -49,8 +50,15 @@ namespace Jax
 		JaxObject& operator=(const JaxObject& object);
 		JaxObject();
 
-		//DECLARE_RTTI
-	public: 
+		DECLARE_RTTI
+	public:
+		static JaxObject* GetInstance(const JaxString& rttiName);
+		static JaxObject* GetInstance(const JaxRtti& rtti);
+		template<typename T>
+		static T* GetInstance()
+		{
+			return (T*)GetInstance(T::sm_Type);
+		}
 		virtual JaxRtti& GetType() const { return sm_Type; }
 		static JaxRtti sm_Type; 
 		static JaxPriority sm_Priority;
@@ -59,7 +67,6 @@ namespace Jax
 		bool IsDerived(const JaxObject* pObject) const;
 		bool IsSameType(const JaxRtti& type) const;
 		bool IsDerived(const JaxRtti& type) const;
-
 
 	protected:
 		size_t m_uiObjectID;

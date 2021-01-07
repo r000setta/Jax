@@ -8,6 +8,28 @@
 
 namespace Jax
 {
+#define BEGIN_ADD_PROPERTY(classname,baseclassname) \
+bool classname::TerminalProperty() \
+{\
+sm_Type.ClearProperty(); \
+return true; \
+}\
+bool classname::InitialProperty(JaxRtti* rtti) \
+{\
+classname* dummy=NULL;\
+JaxProperty* activeProperty=NULL;\
+JaxRtti* rttiTmp=rtti;\
+if(!rtti)\
+{\
+rtti=&sm_Type;\
+}\
+baseclassname::InitialProperty(rtti);
+
+#define END_ADD_PROPERTY \
+return true; \
+}
+
+	class JaxFunction;
 	class JaxProperty
 	{
 	public:
@@ -198,4 +220,99 @@ namespace Jax
 		return true;
 	}
 
+	using FunctionTemplatePtr = void(*)(JaxObject* p, JaxFunction* pFun, void* para, void* ret);
+	class JaxFunction
+	{
+	public:
+		enum
+		{
+			F_DEFAULT=0x00,
+			F_CLIENT=0x01,
+			F_MAX
+		};
+
+		JaxFunction() :m_pReturnProperty(NULL), objectFun(NULL) {}
+		~JaxFunction();
+
+		JaxFunction(JaxRtti& owner, const JaxUsedName& name, size_t flag) :m_pOwner(&owner)
+		{
+			m_Name = name;
+			m_uiFlag = flag;
+			m_pReturnProperty = NULL;
+			objectFun = NULL;
+		}
+
+		FORCEINLINE JaxRtti* GetRtti() const
+		{
+			return m_pOwner;
+		}
+
+		FORCEINLINE const JaxUsedName& GetName() const
+		{
+			return m_Name;
+		}
+
+		virtual bool Clone(JaxFunction* f);
+
+		virtual JaxFunction* GetInstance()
+		{
+			return JAX_NEW JaxFunction();
+		}
+
+		void SetOwner(JaxRtti& owner)
+		{
+			m_pOwner = &owner;
+		}
+
+		size_t GetFlag() const
+		{
+			return m_uiFlag;
+		}
+
+		void AddProperty(JaxProperty* p)
+		{
+			m_PropertyArray.AddElement(p);
+		}
+
+		JaxProperty* GetProperty(size_t i)
+		{
+			return m_PropertyArray[i];
+		}
+
+		void SetReturnType(JaxProperty* p)
+		{
+			m_pReturnProperty = p;
+		}
+
+		bool IsReturnVoid()
+		{
+			return !m_pReturnProperty;
+		}
+
+		void SetTotalSize(size_t totalSize)
+		{
+			m_uiTotalSize = totalSize;
+		}
+
+		bool IsSame(JaxFunction* p)
+		{
+			if (m_pOwner != p->m_pOwner
+				|| m_Name != p->m_Name
+				|| m_uiTotalSize != p->m_uiTotalSize
+				|| m_PropertyArray.GetNum() != p->m_PropertyArray.GetNum())
+			{
+				return false;
+			}
+			return true;
+		}
+
+		FunctionTemplatePtr objectFun;
+	protected:
+		JaxRtti* m_pOwner;
+		JaxUsedName m_Name;
+		size_t m_uiFlag;
+		JaxArray<JaxProperty*> m_PropertyArray;
+		JaxProperty* m_pReturnProperty;
+		size_t m_uiTotalSize;
+	};
 }

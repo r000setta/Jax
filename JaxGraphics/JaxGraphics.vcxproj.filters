@@ -45,6 +45,9 @@
     <ClInclude Include="JaxCustomArchiveObject.h">
       <Filter>Core\Stream</Filter>
     </ClInclude>
+    <ClInclude Include="JaxMain.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JaxReference.cpp">
@@ -74,5 +77,6 @@
     <ClCompile Include="JaxResouceManager.cpp">
       <Filter>Core\Stream</Filter>
     </ClCompile>
+    <ClCompile Include="JaxMain.cpp" />
   </ItemGroup>
 </Project>

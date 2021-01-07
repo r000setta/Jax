@@ -6,6 +6,78 @@
 
 namespace Jax
 {
+#define DECLARE_INITIAL \
+public:\
+static bool RegisterMainFactory(); \
+static bool InitialClassFactory(); \
+static bool sm_bRegisterMainFactory; \
+static bool InitialProperty(JaxRtti*); \
+static bool TerminalProperty();
+
+#define IMPLEMENT_INITIAL_BEGIN(classname) \
+static bool gs_bStreamRegistered_##classname=classname::RegisterMainFactory(); \
+bool classname::sm_bRegisterMainFactory=false; \
+bool classname::InitialClassFactory() \
+{ \
+sm_ClassFactory.AddElement(sm_Type.GetName(),FactoryFunc);\
+return true;\
+}\
+JaxObject* classname::FactoryFunc()\
+{\
+return JAX_NEW classname;\
+}\
+bool classname::RegisterFactory()\
+{\
+if(!sm_bRegisterMainFactory)\
+{
+
+#define IMPLEMENT_INITIAL_END \
+sm_bRegisterMainFactory=true;\
+}\
+return sm_bRegisterMainFactory;\
+}
+
+#define DECLARE_INITIAL_ONLY\
+public:\
+static bool RegisterMainFactory();\
+static bool sm_bRegisterMainFactory;
+
+#define IMPLEMENT_INITIAL_ONLY_BEGIN(classname) \
+static bool gs_bStreamRegistered_##classsname=classname::RegisterMainFactory();\
+bool classname::sm_bRegisterMainFactory=false;\
+bool classname::RegisterMainFactory() \
+{\
+if(!sm_bRegisterMainFactory)\
+{\
+
+#define IMPLEMENT_INITIAL_ONLY_END \
+sm_bRegisterMainFactory=true;\
+}\
+return sm_bRegisterMainFactory;\
+}
+
+#define DECLARE_INITIAL_NO_CLASS_FACTORY\
+public:\
+static bool RegisterMainFactory();\
+static bool sm_bRegisterMainFactory;\
+static bool Initialproperty(JaxRtti* );\
+static bool TerminalProperty();
+
+#define IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(classname)\
+static bool gs_bStreamRegistered_##classname=classname::RegisterMainFactory();\
+bool classname::sm_bRegisterMainFactory=false;\
+bool classname::RegisterMainFactory()\
+{\
+if(!sm_bRegisterMainFactory)\
+{
+
+#define IMPLEMENT_INITIAL_NO_CLASS_FACTORY_END \
+sm_bRegisterMainFactory=true;\
+}\
+return sm_bRegisterMainFactory;\
+}
+
+
 	class JAXGRAPHIC_API JaxName :public JaxReference, public JaxMemObject
 	{
 	public:

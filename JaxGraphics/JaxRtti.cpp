@@ -71,6 +71,61 @@ namespace Jax
 		m_PropertyArray.Clear();
 	}
 
+	JaxFunction* JaxRtti::GetFunction(size_t i) const
+	{
+		if (i >= m_FunctionArray.GetNum())
+		{
+			return NULL;
+		}
+		return m_FunctionArray[i];
+	}
+
+	size_t JaxRtti::GetFunctionNum() const
+	{
+		return m_FunctionArray.GetNum();
+	}
+
+	void JaxRtti::AddFunction(JaxFunction* function)
+	{
+		if (function)
+		{
+			for (size_t i = 0; i < m_FunctionArray.GetNum(); ++i)
+			{
+				if (m_FunctionArray[i]->IsSame(function))
+				{
+					JAXMAC_DELETE(m_FunctionArray[i]);
+					m_FunctionArray[i] = function;
+					return;
+				}
+			}
+			m_FunctionArray.AddElement(function);
+		}
+	}
+
+	void JaxRtti::AddFunction(JaxRtti& rtti)
+	{
+		for (size_t i = 0; i < rtti.m_FunctionArray.GetNum(); ++i)
+		{
+			JaxFunction* function = rtti.GetFunction(i);
+			JaxFunction* pFunction = function->GetInstance();
+			pFunction->SetOwner(*this);
+			pFunction->Clone(function);
+			m_FunctionArray.AddElement(pFunction);
+		}
+	}
+
+	void JaxRtti::ClearFunction()
+	{
+		for (size_t i = 0; i < m_FunctionArray.GetNum(); ++i)
+		{
+			if (m_FunctionArray[i])
+			{
+				JAXMAC_DELETE(m_FunctionArray[i]);
+			}
+		}
+		m_FunctionArray.Clear();
+	}
+
 	bool JaxRtti::IsDerived(const JaxRtti& type) const
 	{
 		const JaxRtti* pTmp = this;

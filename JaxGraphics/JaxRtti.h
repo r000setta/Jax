@@ -9,6 +9,7 @@ namespace Jax
 	class JaxObject;
 	typedef JaxObject* (*CreateObjectFun)();
 	class JaxProperty;
+	class JaxFunction;
 
 #define DECLARE_RTTI \
 public: \
@@ -17,7 +18,7 @@ static JaxRtti sm_Type; \
 static JaxPriority sm_Priority;
 
 #define IMPLEMENT_RTTI(classname,baseclassname) \
-JaxRtti classname:sm_Type(_T(#classname),&baseclassname::sm_Type,classname::FactoryFunc);\
+JaxRtti classname:sm_Type(_T(#classname),&baseclassname::sm_Type,classname::FactoryFunc); \
 JaxPriority classname::sm_Priority;
 
 #define IMPLEMENT_RTTI_NoCreateFun(classname,baseclassname)\
@@ -48,6 +49,8 @@ JaxPriority classname::sm_Priority;
 			return &Type == this;
 		}
 
+		bool IsDerived(const JaxRtti& Type) const;
+
 		FORCEINLINE JaxRtti* GetBase() const
 		{
 			return m_pBase;
@@ -60,12 +63,17 @@ JaxPriority classname::sm_Priority;
 		void AddProperty(JaxRtti& rtti);
 		void ClearProperty();
 
-		bool IsDerived(const JaxRtti& Type) const;
+		JaxFunction* GetFunction(size_t i) const;
+		size_t GetFunctionNum() const;
+		void AddFunction(JaxFunction* function);
+		void AddFunction(JaxRtti& rtti);
+		void ClearFunction();
 
 	private:
 		JaxString m_cRttiName;
 		JaxRtti* m_pBase;
-		JaxArray<JaxProperty *> m_PropertyArray;
+		JaxArray<JaxProperty*> m_PropertyArray;
+		JaxArray<JaxFunction*> m_FunctionArray;
 		CreateObjectFun m_CreateFun;
 	};
 }

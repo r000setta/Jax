@@ -154,6 +154,7 @@
   <ItemGroup>
     <ClInclude Include="JaxCustomArchiveObject.h" />
     <ClInclude Include="JaxGraphic.h" />
+    <ClInclude Include="JaxMain.h" />
     <ClInclude Include="JaxName.h" />
     <ClInclude Include="JaxObject.h" />
     <ClInclude Include="JaxPointer.h" />
@@ -167,6 +168,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JaxCustomArchiveObject.cpp" />
+    <ClCompile Include="JaxMain.cpp" />
     <ClCompile Include="JaxName.cpp" />
     <ClCompile Include="JaxObject.cpp" />
     <ClCompile Include="JaxPriority.cpp" />
