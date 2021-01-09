@@ -6,6 +6,8 @@
 #include "JaxMap.h"
 #include "JaxString.h"
 #include "JaxName.h"
+#include "JaxMain.h"
+
 namespace Jax
 {
 
@@ -52,6 +54,7 @@ namespace Jax
 
 		DECLARE_RTTI
 	public:
+		friend class JaxRtti;
 		static JaxObject* GetInstance(const JaxString& rttiName);
 		static JaxObject* GetInstance(const JaxRtti& rtti);
 		template<typename T>
@@ -59,14 +62,18 @@ namespace Jax
 		{
 			return (T*)GetInstance(T::sm_Type);
 		}
-		virtual JaxRtti& GetType() const { return sm_Type; }
-		static JaxRtti sm_Type; 
-		static JaxPriority sm_Priority;
+
+		virtual bool BeforeSave(void* data = NULL);
+		virtual bool PostSave(void* data = NULL);
+		virtual bool PostLoad(void* data = NULL);
+
 
 		bool IsSameType(const JaxObject* pObject) const;
 		bool IsDerived(const JaxObject* pObject) const;
 		bool IsSameType(const JaxRtti& type) const;
 		bool IsDerived(const JaxRtti& type) const;
+
+		DECLARE_INITIAL_NO_CLASS_FACTORY;
 
 	protected:
 		size_t m_uiObjectID;

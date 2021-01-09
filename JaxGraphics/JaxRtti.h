@@ -69,6 +69,13 @@ JaxPriority classname::sm_Priority;
 		void AddFunction(JaxRtti& rtti);
 		void ClearFunction();
 
+		void f() {}
+
+		CreateObjectFun GetCreateFunc()
+		{
+			return m_CreateFun;
+		}
+
 	private:
 		JaxString m_cRttiName;
 		JaxRtti* m_pBase;

@@ -23,7 +23,7 @@ namespace Jax
 
 	private:
 		JaxMain();
-		~JaxMain();
+		~JaxMain() {}
 
 		struct Element
 		{
@@ -31,6 +31,7 @@ namespace Jax
 			JaxPriority* pPriority;
 
 			Element() :func(NULL), pPriority(NULL) {}
+			Element(Function func, JaxPriority* p) :func(func), pPriority(p) {}
 			~Element()
 			{
 				func = NULL;
@@ -72,5 +73,17 @@ namespace Jax
 		static size_t sm_uiInitialObject;
 		static size_t sm_uiTerminalObject;
 
+		class PriorityCompare
+		{
+		public:
+			FORCEINLINE bool operator()(Element& e1, Element& e2)
+			{
+				static JaxPriority sp1;
+				static JaxPriority sp2;
+				JaxPriority* p1 = e1.pPriority ? e1.pPriority : &sp1;
+				JaxPriority* p2 = e2.pPriority ? e2.pPriority : &sp2;
+				return *p1 <= *p2;
+			}
+		};
 	};
 }

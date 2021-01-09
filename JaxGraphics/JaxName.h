@@ -32,12 +32,15 @@ if(!sm_bRegisterMainFactory)\
 {
 
 #define IMPLEMENT_INITIAL_END \
+JaxMain::AddInitialFunction(InitialClassFactory);\
+JaxMain::AddInitialPropertyFunction(InitialProperty);\
+JaxMain::AddInitialPropertyFunction(TerminalProperty);\
 sm_bRegisterMainFactory=true;\
 }\
 return sm_bRegisterMainFactory;\
 }
 
-#define DECLARE_INITIAL_ONLY\
+#define DECLARE_INITIAL_ONLY \
 public:\
 static bool RegisterMainFactory();\
 static bool sm_bRegisterMainFactory;
@@ -56,14 +59,14 @@ sm_bRegisterMainFactory=true;\
 return sm_bRegisterMainFactory;\
 }
 
-#define DECLARE_INITIAL_NO_CLASS_FACTORY\
+#define DECLARE_INITIAL_NO_CLASS_FACTORY \
 public:\
 static bool RegisterMainFactory();\
 static bool sm_bRegisterMainFactory;\
-static bool Initialproperty(JaxRtti* );\
+static bool InitialProperty(JaxRtti* );\
 static bool TerminalProperty();
 
-#define IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(classname)\
+#define IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(classname) \
 static bool gs_bStreamRegistered_##classname=classname::RegisterMainFactory();\
 bool classname::sm_bRegisterMainFactory=false;\
 bool classname::RegisterMainFactory()\
@@ -72,10 +75,24 @@ if(!sm_bRegisterMainFactory)\
 {
 
 #define IMPLEMENT_INITIAL_NO_CLASS_FACTORY_END \
+JaxMain::AddInitialPropertyFunction(InitialProperty);\
+JaxMain::AddTerminalPropertyFunction(TerminalProperty);\
 sm_bRegisterMainFactory=true;\
 }\
 return sm_bRegisterMainFactory;\
 }
+
+#define ADD_INITIAL_FUNCTION(functionname) \
+JaxMain::AddInitialFunction(functionname);
+
+#define ADD_INITIAL_FUNCTION_WITH_PRIORITY(functionname) \
+JaxMain::AddInitialFunction(functionname,&sm_Priority);
+
+#define ADD_TERMINAL_FUNCTION(functionname) \
+JaxMain::AddTerminalFunction(functionname);
+
+#define ADD_TERMINAL_FUNCTION_WITH_PRIORITY(functionname) \
+JaxMain::AddTerminalFunction(functionname,&sm_Priority);
 
 
 	class JAXGRAPHIC_API JaxName :public JaxReference, public JaxMemObject
@@ -175,8 +192,14 @@ return sm_bRegisterMainFactory;\
 		JAXGRAPHIC_API friend bool operator!=(const JaxUsedName& name1, const TCHAR* pChar);
 
 		virtual void Archive(JaxStream& stream);
+		virtual void CopyFrom(JaxCustomArchiveObject* object, JaxMap<JaxObject*, JaxObject*>& cloneMap);
 
 	protected:
 		JaxNamePtr m_pName;
+
+		DECLARE_INITIAL_ONLY
+		static bool InitialDefaultState();
+		static bool TerminalDefaultState();
 	};
+	CUSTOMTYPE_MARCO(JaxUsedName)
 }

@@ -2,5 +2,7 @@
 #include "JaxProperty.h"
 namespace Jax
 {
-	IMPLEMENT(JaxTestSaveLoad,JaxObject)
+	IMPLEMENT_RTTI(JaxTestSaveLoad,JaxObject)
+	BEGIN_ADD_PROPERTY(JaxTestSaveLoad,JaxObject)
+
 }

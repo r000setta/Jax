@@ -74,9 +74,11 @@
     <ClCompile Include="JaxName.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="JaxResouceManager.cpp">
-      <Filter>Core\Stream</Filter>
+    <ClCompile Include="JaxMain.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="JaxMain.cpp" />
+    <ClCompile Include="JaxResouceManager.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -4,9 +4,11 @@
 namespace Jax
 {
 	IMPLEMENT_RTTI_NoParent_NoCreateFun(JaxObject);
-	//JaxRtti JaxObject::sm_Type(_T("JaxObject"), NULL, NULL); 
-	//JaxPriority JaxObject::sm_Priority;
 	JaxMapOrder<JaxUsedName, FactoryFunction> JaxObject::sm_ClassFactory;
+	IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(JaxObject)
+	IMPLEMENT_INITIAL_NO_CLASS_FACTORY_END
+	BEGIN_ADD_PROPERTY_ROOT(JaxObject)
+	END_ADD_PROPERTY
 
 	JaxFastObjectManager::JaxFastObjectManager()
 	{
@@ -69,6 +71,39 @@ namespace Jax
 	{
 		m_uiFlag = 0;
 		m_uiObjectID = GetObjectManager().AddObject(this);
+	}
+
+	JaxObject* JaxObject::GetInstance(const JaxRtti& rtti)
+	{
+		//TODO
+		return NULL;
+	}
+
+	bool JaxObject::BeforeSave(void* data)
+	{
+		return true;
+	}
+
+	bool JaxObject::PostSave(void* data)
+	{
+		return true;
+	}
+
+	bool JaxObject::PostLoad(void* data)
+	{
+		return true;
+	}
+
+	JaxObject* JaxObject::GetInstance(const JaxString& rttiName)
+	{
+		size_t i = sm_ClassFactory.Find(rttiName);
+		if (i == sm_ClassFactory.GetNum())
+		{
+			return NULL;
+		}
+		JaxObject* object = sm_ClassFactory[i].value();
+		//TODO:GC
+		return object;
 	}
 
 	bool JaxObject::IsSameType(const JaxObject* pObject) const

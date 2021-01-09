@@ -2,6 +2,7 @@
 
 namespace Jax
 {
+
 	JaxCriticalSection JaxResourceManager::sm_NameCri;
 	JaxResourceManager::~JaxResourceManager()
 	{
@@ -48,6 +49,26 @@ namespace Jax
 		}
 		sm_NameCri.Unlock();
 		return name;
+	}
+
+	void JaxResourceManager::CacheResource()
+	{
+	}
+
+	IMPLEMENT_PRIORITY(JaxResourceManager)
+	IMPLEMENT_INITIAL_ONLY_BEGIN(JaxResourceManager);
+	ADD_INITIAL_FUNCTION_WITH_PRIORITY(InitialDefaultState)
+	ADD_TERMINAL_FUNCTION(TerminalDefaultState)
+	IMPLEMENT_INITIAL_ONLY_END
+
+	bool JaxResourceManager::InitialDefaultState()
+	{
+		return true;
+	}
+
+	bool JaxResourceManager::TerminalDefaultState()
+	{
+		return true;
 	}
 
 	JaxResourceControll::JaxResourceControll(unsigned int GCMaxTimeCount)

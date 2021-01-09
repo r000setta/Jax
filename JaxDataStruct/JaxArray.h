@@ -377,7 +377,7 @@ namespace Jax
 			{
 				if (Compare(m_pBuffer[j], m_pBuffer[j + 1]) == 0) 
 				{
-					swap(m_pBuffer[i], m_pBuffer[j + 1]);
+					Swap(m_pBuffer[i], m_pBuffer[j + 1]);
 				}
 			}
 		}

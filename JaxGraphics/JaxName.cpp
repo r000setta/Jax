@@ -1,7 +1,7 @@
 #include "JaxName.h"
 #include "JaxStream.h"
 #include "JaxResouceManager.h"
-
+#include "JaxMain.h"
 namespace Jax
 {
 	JaxName::~JaxName()
@@ -25,6 +25,12 @@ namespace Jax
 		m_String = string;
 	}
 
+	IMPLEMENT_PRIORITY(JaxUsedName)
+	IMPLEMENT_INITIAL_ONLY_BEGIN(JaxUsedName)
+	ADD_PRIORITY(JaxResourceManager)
+	ADD_INITIAL_FUNCTION_WITH_PRIORITY(InitialDefaultState)
+	ADD_TERMINAL_FUNCTION(TerminalDefaultState)
+	IMPLEMENT_INITIAL_ONLY_END
 
 	JaxUsedName::~JaxUsedName()
 	{
@@ -186,6 +192,22 @@ namespace Jax
 				stream.WriteString(JaxString::sm_StringNULL);
 			}
 		}
+	}
+
+	void JaxUsedName::CopyFrom(JaxCustomArchiveObject* object, JaxMap<JaxObject*, JaxObject*>& cloneMap)
+	{
+		JaxUsedName* usedName = (JaxUsedName*)object;
+		*this = *usedName;
+	}
+
+	bool JaxUsedName::InitialDefaultState()
+	{
+		return true;
+	}
+
+	bool JaxUsedName::TerminalDefaultState()
+	{
+		return true;
 	}
 
 }

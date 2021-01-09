@@ -22,8 +22,11 @@ namespace Jax
 		JaxTestSaveLoad() :m_Int(10) {}
 		~JaxTestSaveLoad() {}
 
-	public:
+		DECLARE_INITIAL
 		int m_Int;
+	public:
+		static bool InitialDefaultState();
+		static bool TerminalDefaultState();
 	};
 
 	DECLARE_PTR(JaxTestSaveLoad);

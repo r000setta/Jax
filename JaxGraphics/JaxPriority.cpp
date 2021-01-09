@@ -17,6 +17,21 @@ namespace Jax
 		m_pPriorityThanList.Clear();
 	}
 
+	bool JaxPriority::AddPriorityThan(JaxPriority* priority)
+	{
+		if (!priority)
+		{
+			return false;
+		}
+		if (priority->CheckIsCircle(this))
+		{
+			return false;
+		}
+		m_uiPriorityNum = 0;
+		m_pPriorityThanList.AddElement(priority);
+		return true;
+	}
+
 	size_t JaxPriority::GetPriorityNum()
 	{
 		CheckPriorityNum();

@@ -12,6 +12,7 @@ namespace Jax
 		JaxCustomArchiveObject();
 		virtual ~JaxCustomArchiveObject();
 		virtual void Archive(JaxStream& stream) = 0;
+		virtual void CopyFrom(JaxCustomArchiveObject* object, JaxMap<JaxObject*, JaxObject*>& cloneMap) = 0;
 	};
 
 	CUSTOMTYPE_MARCO(JaxCustomArchiveObject)

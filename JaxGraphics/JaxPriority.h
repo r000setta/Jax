@@ -11,6 +11,10 @@ static JaxPriority sm_Priority;
 #define IMPLEMENT_PRIORITY(classname) \
 JaxPriority classname::sm_Priority;
 
+#define ADD_PRIORITY(classname) \
+if(!sm_Priority.AddPriorityThan(&classname::sm_Priority)) \
+return false;
+
 
 	class JAXGRAPHIC_API JaxPriority
 	{
@@ -18,7 +22,8 @@ JaxPriority classname::sm_Priority;
 		JaxPriority();
 		JaxPriority(size_t priorityNum);
 		~JaxPriority();
-
+		
+		bool AddPriorityThan(JaxPriority* priority);
 		size_t GetPriorityNum();
 
 		JaxPriority& operator=(JaxPriority& r);

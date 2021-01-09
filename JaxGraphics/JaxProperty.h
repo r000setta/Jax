@@ -8,6 +8,7 @@
 
 namespace Jax
 {
+
 #define BEGIN_ADD_PROPERTY(classname,baseclassname) \
 bool classname::TerminalProperty() \
 {\
@@ -28,6 +29,34 @@ baseclassname::InitialProperty(rtti);
 #define END_ADD_PROPERTY \
 return true; \
 }
+
+#define NO_PROPERTY(classname) \
+bool classname::InitialProperty(JaxRtti* ) \
+{\
+return true;\
+}\
+bool classname::TerminalProperty() \
+{\
+sm_Type.ClearProperty();\
+return true;\
+}
+
+#define BEGIN_ADD_PROPERTY_ROOT(classname) \
+bool classname::TerminalProperty() \
+{\
+sm_Type.ClearProperty();\
+return true;\
+}\
+bool classname::InitialProperty(JaxRtti* rtti) \
+{\
+classname* dummy=NULL;\
+JaxProperty* activeProperty=NULL;\
+if(!rtti)\
+{\
+rtti=&sm_Type; \
+}
+
+#define A a
 
 	class JaxFunction;
 	class JaxProperty
@@ -220,6 +249,26 @@ return true; \
 		return true;
 	}
 
+	template<typename T,typename NumType>
+	struct DataPropertyCreator
+	{
+		JaxProperty* CreateProperty(const JaxUsedName& name, JaxRtti& owner, size_t offset, size_t numOffset);
+		JaxProperty* CreateFunctionProperty(const JaxUsedName& name, JaxRtti& owner, size_t offset, size_t numOffset);
+		JaxProperty* CreateProperty(const JaxUsedName& name, JaxRtti& owner, size_t offset, size_t dataNum, bool dynamicCreate);
+	};
+
+	template<typename T>
+	class AutoPropertyCreator
+	{
+		JaxPropety* CreateProperty(const JaxUsedName& name, JaxRtti& owner, size_t offset, size_t flag);
+	};
+
+	class PropertyCreator
+	{
+	public:
+
+	};
+
 	using FunctionTemplatePtr = void(*)(JaxObject* p, JaxFunction* pFun, void* para, void* ret);
 	class JaxFunction
 	{
@@ -315,4 +364,22 @@ return true; \
 		JaxProperty* m_pReturnProperty;
 		size_t m_uiTotalSize;
 	};
+
+	template<typename T, typename NumType>
+	inline JaxProperty* DataPropertyCreator<T, NumType>::CreateProperty(const JaxUsedName& name, JaxRtti& owner, size_t offset, size_t numOffset)
+	{
+		return JAX_NEW JaxDataProperty<T, NumType>(owner, name, offset, numOffset);
+	}
+
+	template<typename T, typename NumType>
+	inline JaxProperty* DataPropertyCreator<T, NumType>::CreateProperty(const JaxUsedName& name, JaxRtti& owner, size_t offset, size_t dataNum, bool dynamicCreate)
+	{
+		return JAX_NEW JaxDataProperty<T, NumType>(owner, name, offset, dataNum, dynamicCreate);
+	}
+
+	template<typename T, typename NumType>
+	inline JaxProperty* DataPropertyCreator<T, NumType>::CreateFunctionProperty(const JaxUsedName& name, JaxRtti& owner, size_t offset, size_t numOffset)
+	{
+		return JAX_NEW JaxDataProperty<T, NumType>(owner, name, offset, numOffset);
+	}
 }

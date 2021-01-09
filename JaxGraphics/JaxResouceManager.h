@@ -59,8 +59,22 @@ return s_##ResourceName##Set; \
 		static JaxName* CreateName(const TCHAR* pChar);
 		static JaxName* CreateName(const JaxString& string);
 
+		static void CacheResource();
+
+		static void AddGCObject(JaxObject* p)
+		{
+
+		}
+
+		DECLARE_INITIAL_ONLY
+
 	protected:
 		static JaxCriticalSection sm_NameCri;
+
+	private:
+		static bool InitialDefaultState();
+		static bool TerminalDefaultState();
+		
 	};
 
 	template<typename KEY, typename VALUE>
