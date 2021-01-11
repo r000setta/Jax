@@ -18,10 +18,10 @@ static JaxRtti sm_Type; \
 static JaxPriority sm_Priority;
 
 #define IMPLEMENT_RTTI(classname,baseclassname) \
-JaxRtti classname:sm_Type(_T(#classname),&baseclassname::sm_Type,classname::FactoryFunc); \
+JaxRtti classname::sm_Type(_T(#classname),&baseclassname::sm_Type,classname::FactoryFunc); \
 JaxPriority classname::sm_Priority;
 
-#define IMPLEMENT_RTTI_NoCreateFun(classname,baseclassname)\
+#define IMPLEMENT_RTTI_NoCreateFun(classname,baseclassname) \
 JaxRtti classname::sm_Type(_T(#classname),&baseclassname::sm_Type,NULL);\
 JaxPriority classname::sm_Priority;
 

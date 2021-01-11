@@ -86,7 +86,7 @@ namespace Jax
 	template<typename KEY, typename VALUE, JaxMemManagerFun MMFun>
 	inline void JaxMap<KEY, VALUE, MMFun>::AddBufferNum(size_t bufferNum)
 	{
-		if (!bufferNum)
+		if (bufferNum)
 		{
 			m_uiAllocNum++;
 			m_uiGrowBy = m_uiAllocNum * m_uiGrowBy;
@@ -353,7 +353,8 @@ namespace Jax
 		template<typename KEY1, typename VALUE1>
 		void AddElement(const MapElement<KEY1, VALUE1>& element);
 
-		void AddElememt(const KEY& key, const VALUE& value);
+		void AddElement(const KEY& key, const VALUE& value);
+
 		size_t Find(const KEY& key) const;
 
 	protected:
@@ -374,7 +375,7 @@ namespace Jax
 	}
 
 	template<typename KEY, typename VALUE, JaxMemManagerFun MMFun>
-	inline void JaxMapOrder<KEY, VALUE, MMFun>::AddElememt(const KEY& key, const VALUE& value)
+	inline void JaxMapOrder<KEY, VALUE, MMFun>::AddElement(const KEY& key, const VALUE& value)
 	{
 		MapElement<KEY, VALUE> element{ key,value };
 		AddElement(element);

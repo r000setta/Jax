@@ -175,7 +175,7 @@ namespace Jax
 		}
 
 		m_uiStreamFlag = AT_LINK;
-		for (size_t i = m_pObjectArray.GetNum() - 1; i >= 0; --i)
+		for (int i = m_pObjectArray.GetNum() - 1; i >= 0; --i)
 		{
 			JaxRtti& rtti = m_pObjectArray[i]->GetType();
 			for (size_t j = 0; j < rtti.GetPropertyNum(); ++j)
@@ -218,6 +218,8 @@ namespace Jax
 		}
 
 		size_t objectContentAddr = m_uiBufferSize;
+
+		m_uiStreamFlag = AT_SIZE;
 		
 		for (size_t i = 0; i < m_pObjectArray.GetNum(); ++i)
 		{
@@ -256,6 +258,11 @@ namespace Jax
 				}
 			}
 			objectTable[i].m_uiObjectPropertySize = m_uiBufferSize - objectTable[i].m_uiObjectPropertyTabeSize - objectTable[i].m_uiOffset;
+		}
+
+		for (size_t i = 0; i < m_pObjectArray.GetNum(); ++i)
+		{
+			m_pObjectArray[i]->BeforeSave();
 		}
 
 		JAXMAC_DELETE(m_pcBuffer);
@@ -317,14 +324,7 @@ namespace Jax
 			return false;
 		}
 
-		if (!file->Open(fileName, JaxFile::OM_RB))
-		{
-			JAXMAC_DELETE(file);
-			JAXMAC_DELETEA(m_pcBuffer);
-			return false;
-		}
-
-		if (!file->Write(m_pcBuffer, m_uiBufferSize, 1))
+		if (!file->Open(fileName, JaxFile::OM_WB))
 		{
 			JAXMAC_DELETE(file);
 			JAXMAC_DELETEA(m_pcBuffer);
@@ -382,6 +382,30 @@ namespace Jax
 
 	}
 
+	bool JaxStream::ArchiveAll(JaxObject* object)
+	{
+		if (!object)
+		{
+			return false;
+		}
+		if (m_uiStreamFlag == AT_REGISTER)
+		{
+			if (RegisterObject(object))
+			{
+				JaxRtti& rtti = object->GetType();
+				for (size_t j = 0; j < rtti.GetPropertyNum(); ++j)
+				{
+					JaxProperty* property = rtti.GetProperty(j);
+					if (property->GetFlag() & JaxProperty::F_SAVE_LOAD)
+					{
+						property->Archive(*this, object);
+					}
+				}
+			}
+		}
+		return true;
+	}
+
 	int JaxStream::GetStrDistUse(const JaxString& str)
 	{
 		return sizeof(int) + str.GetLength() * sizeof(TCHAR);
@@ -406,6 +430,44 @@ namespace Jax
 		}
 		m_pObjectArray.AddElement(object);
 		return true;
+	}
+
+	const JaxObject* JaxStream::GetObjectByRtti(const JaxRtti& rtti)
+	{
+		JaxObject* object = NULL;
+		for (size_t i = 0; i < m_pObjectArray.GetNum(); ++i)
+		{
+			if ((m_pObjectArray[i]->GetType().IsSameType(rtti)))
+			{
+				object = m_pObjectArray[i];
+				break;
+			}
+		}
+		if (object == NULL)
+		{
+			for (size_t i = 0; i < m_pObjectArray.GetNum(); ++i)
+			{
+				if((m_pObjectArray[i]->GetType()).IsDerived(rtti))
+				{
+					object = m_pObjectArray[i];
+					break;
+				}
+			}
+		}
+		if (object)
+		{
+			for (size_t i = 0; i < m_pObjectArray.GetNum(); ++i)
+			{
+				JaxObject* p = m_pObjectArray[i];
+				JAX_ASSERT(p != NULL);
+				if (p)
+				{
+					p->ClearFlag(JaxObject::OF_REACH);
+					p->SetFlag(JaxObject::OF_UNREACH);
+				}
+			}
+		}
+		return object;
 	}
 }
 

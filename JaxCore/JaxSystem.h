@@ -151,6 +151,24 @@ namespace Jax
 #endif
 	}
 
+	FORCEINLINE bool JaxMainThread()
+	{
+#ifdef WINDOWS
+		return JaxSystem::sm_dwMainThreadID == GetCurrentThreadId();
+#else
+		return false;
+#endif // WINDOWS
+	}
+
+	FORCEINLINE void JaxInitSystem()
+	{
+#ifdef WINDOWS
+		JaxSystem::sm_dwMainThreadID = GetCurrentThreadId();
+#else
+		return;
+#endif // WINDOWS
+	}
+
 #define JAX_ASSERT(Exp) assert(Exp);
 
 	template<typename T>

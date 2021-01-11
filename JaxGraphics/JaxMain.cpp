@@ -27,7 +27,7 @@ namespace Jax
 		{
 			return;
 		}
-		if (sm_pTerminalProperyArray)
+		if (!sm_pTerminalProperyArray)
 		{
 			sm_pTerminalProperyArray = JAX_NEW JaxArray<Function>;
 		}
@@ -104,7 +104,7 @@ namespace Jax
 		sm_pTerminalArray->Sort(0, sm_pTerminalArray->GetNum(), PriorityCompare());
 		sm_uiTerminalObject = JaxObject::GetObjectManager().GetObjectNum();
 
-		for (size_t i = sm_pTerminalArray->GetNum() - 1; i >= 0; --i)
+		for (int i = sm_pTerminalArray->GetNum() - 1; i >= 0; --i)
 		{
 			if (!(*((*sm_pTerminalArray)[i].func))())
 			{

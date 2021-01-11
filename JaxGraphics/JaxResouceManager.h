@@ -108,7 +108,7 @@ return s_##ResourceName##Set; \
 		{
 			return false;
 		}
-		m_Resource.AddElememt(key, object);
+		m_Resource.AddElement(key, object);
 		m_TimeCount.AddElement(0);
 		return true;
 	}

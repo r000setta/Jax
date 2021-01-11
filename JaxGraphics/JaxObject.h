@@ -75,12 +75,44 @@ namespace Jax
 
 		DECLARE_INITIAL_NO_CLASS_FACTORY;
 
+	public:
+		static JaxObject* _CloneCreateObject(JaxObject* object, JaxMap<JaxObject*, JaxObject*>& cloneMap);
+		static void _CloneObject(JaxObject* src, JaxObject* dest, JaxMap<JaxObject*, JaxObject*>& cloneMap);
+		static JaxObject* CloneCreateObject(JaxObject* object);
+		static void CloneObject(JaxObject* src,JaxObject* dest);
+
+		virtual bool PostClone(JaxObject* src);
+
 	protected:
 		size_t m_uiObjectID;
 		static JaxObject* GetNoGCInstance(const JaxString& rttiName);
 		static JaxMapOrder<JaxUsedName, FactoryFunction> sm_ClassFactory;
 
 	public:
+		enum
+		{
+			OF_REACH=0x01,
+			OF_UNREACH=0x02,
+			OF_GCObject=0x04,
+			OF_RootObject=0x10,
+			OF_MAX
+		};
+
+		FORCEINLINE void SetFlag(size_t flag)
+		{
+			m_uiFlag |= flag;
+		}
+
+		FORCEINLINE void ClearFlag(size_t flag)
+		{
+			m_uiFlag &= ~flag;
+		}
+
+		FORCEINLINE bool IsHasFlag(size_t flag)
+		{
+			return (m_uiFlag & flag) != 0;
+		}
+
 		size_t m_uiFlag;
 	};
 

@@ -9,21 +9,28 @@
 namespace Jax
 {
 
+#define REGISTER_PROPERTY(varName,reflectName,flag) \
+{ \
+activeProperty=PropertyCreator::GetAutoPropertyCreator(dummy->varName).CreateProperty( \
+	_T(#reflectName),*rtti,(size_t)((char*)&(dummy->varName)-(char*)dummy),flag); \
+rtti->AddProperty(activeProperty);\
+}
+
 #define BEGIN_ADD_PROPERTY(classname,baseclassname) \
 bool classname::TerminalProperty() \
-{\
+{ \
 sm_Type.ClearProperty(); \
 return true; \
-}\
+} \
 bool classname::InitialProperty(JaxRtti* rtti) \
-{\
-classname* dummy=NULL;\
-JaxProperty* activeProperty=NULL;\
-JaxRtti* rttiTmp=rtti;\
+{ \
+classname* dummy=NULL; \
+JaxProperty* activeProperty=NULL; \
+JaxRtti* rttiTmp=rtti; \
 if(!rtti)\
-{\
-rtti=&sm_Type;\
-}\
+{ \
+rtti=&sm_Type; \
+} \
 baseclassname::InitialProperty(rtti);
 
 #define END_ADD_PROPERTY \
@@ -32,31 +39,29 @@ return true; \
 
 #define NO_PROPERTY(classname) \
 bool classname::InitialProperty(JaxRtti* ) \
-{\
-return true;\
-}\
+{ \
+return true; \
+} \
 bool classname::TerminalProperty() \
-{\
-sm_Type.ClearProperty();\
-return true;\
+{ \
+sm_Type.ClearProperty(); \
+return true; \
 }
 
 #define BEGIN_ADD_PROPERTY_ROOT(classname) \
 bool classname::TerminalProperty() \
-{\
+{ \
 sm_Type.ClearProperty();\
-return true;\
-}\
+return true; \
+} \
 bool classname::InitialProperty(JaxRtti* rtti) \
-{\
-classname* dummy=NULL;\
-JaxProperty* activeProperty=NULL;\
-if(!rtti)\
-{\
+{ \
+classname* dummy=NULL; \
+JaxProperty* activeProperty=NULL; \
+if(!rtti) \
+{ \
 rtti=&sm_Type; \
 }
-
-#define A a
 
 	class JaxFunction;
 	class JaxProperty
@@ -85,10 +90,36 @@ rtti=&sm_Type; \
 			F_MAX
 		};
 
-		JaxProperty();
-		JaxProperty(JaxRtti& owner,const JaxUsedName& name, size_t elementOffset, size_t flag);
+		JaxProperty()
+		{
+			m_pRttiOwner = NULL;
+			m_pFunctionOwner = NULL;
+			m_uiFlag = 0;
+			m_uiElementOffset = 0;
+		}
 
-		virtual ~JaxProperty();
+		JaxProperty(JaxRtti& owner, const JaxUsedName& name, size_t elementOffset, size_t flag)
+			:m_pRttiOwner(&owner)
+		{
+			m_Name = name;
+			m_uiElementOffset = elementOffset;
+			m_uiFlag = flag;
+			m_pFunctionOwner = NULL;
+		}
+
+		JaxProperty(JaxFunction& owner, const JaxUsedName& name, size_t elementOffset, size_t flag)
+			:m_pFunctionOwner(&owner)
+		{
+			m_Name = name;
+			m_uiElementOffset = elementOffset;
+			m_uiFlag = flag;
+			m_pRttiOwner = NULL;
+		}
+
+		virtual ~JaxProperty()
+		{
+
+		}
 
 		virtual size_t GetPropertyType() const = 0;
 
@@ -108,18 +139,29 @@ rtti=&sm_Type; \
 		}
 
 		virtual bool Archive(JaxStream& stream, void* pObj) = 0;
-
 		virtual JaxProperty* GetInstance() = 0;
 		virtual void CloneData(void* src, void* dest, JaxMap<JaxObject*, JaxObject*>& cloneMap) = 0;
+		virtual bool Clone(JaxProperty* p)
+		{
+			if ((p->GetRtti() == GetRtti()))
+			{
+				m_Name = p->m_Name;
+				m_uiFlag = p->m_uiFlag;
+				m_uiElementOffset = p->m_uiElementOffset;
+				return true;
+			}
+			return false;
+		}
+		virtual void CopyData(void* src, void* dest) = 0;
 
 		void SetOwner(JaxRtti& owner);
 		size_t GetFlag() const;
 		void SetFlag(size_t flag);
 
-		virtual bool Clone(JaxProperty* p);
 
 	protected:
 		JaxRtti* m_pRttiOwner;
+		JaxFunction* m_pFunctionOwner;
 		JaxUsedName m_Name;
 		size_t m_uiFlag;
 		size_t m_uiElementOffset;
@@ -249,6 +291,121 @@ rtti=&sm_Type; \
 		return true;
 	}
 
+	template<typename T>
+	class JaxValueBaseProperty :public JaxProperty
+	{
+	public:
+		JaxValueBaseProperty()
+		{
+
+		}
+
+		JaxValueBaseProperty(JaxRtti& owner, const JaxUsedName& name, size_t offset, size_t flag, bool range = false, T high = T(), T low = T(), T fStep = T())
+			:JaxProperty(owner, name, offset, flag)
+		{
+			m_LowValue = low;
+			m_HighValue = high;
+			m_fStep = fStep;
+			m_bRange = range;
+		}
+
+		JaxValueBaseProperty(JaxFunction& owner, const JaxUsedName& name, size_t offset, size_t flag, bool range = false, T high = T(), T low = T(), T fStep = T())
+			:JaxProperty(owner, name, offset, flag)
+		{
+			m_LowValue = low;
+			m_HighValue = high;
+			m_fStep = fStep;
+			m_bRange = range;
+		}
+
+		virtual ~JaxValueBaseProperty() {}
+
+		virtual bool Clone(JaxProperty* p)
+		{
+			JaxValueBaseProperty<T>* tmp = (JaxValueBaseProperty<T>*)p;
+			if (!JaxProperty::Clone(tmp))
+				return false;
+			m_LowValue = tmp->m_LowValue;
+			m_HighValue = tmp->m_HighValue;
+			return true;
+		}
+
+	protected:
+		T m_LowValue;
+		T m_HighValue;
+		T m_fStep;
+		bool m_bRange;
+	};
+
+	template<typename T>
+	class JaxValueProperty :public JaxValueBaseProperty<T>
+	{
+	public:
+		JaxValueProperty() {}
+		JaxValueProperty(JaxRtti& owner, const JaxUsedName& name, size_t offset, size_t flag, bool range = false, T high = T(), T low = T(), T fStep = T())
+			:JaxValueBaseProperty(owner, name, offset, flag, range, high, low, fStep)
+		{
+
+		}
+
+		JaxValueProperty(JaxFunction& owner, const JaxUsedName& name, size_t offset, size_t flag, bool range = false, T high = T(), T low = T(), T fStep = T())
+			:JaxValueBaseProperty(owner, name, offset, flag, range, high, low, fStep)
+		{
+
+		}
+
+		virtual ~JaxValueProperty() {}
+		virtual size_t GetPropertyType() const
+		{
+			return PT_VALUE;
+		}
+
+		virtual bool SetValue(void* obj, T& src)
+		{
+			if (src > m_HighValue || src < m_LowValue) return false;
+			*(T*)(((unsigned char*)obj) + m_uiElementOffset) = src;
+			return true;
+		}
+
+		virtual bool GetValue(void* obj, T& dest) const
+		{
+			dest = *(T*)(((unsigned char*)obj) + m_uiElementOffset);
+			return true;
+		}
+
+		virtual bool GetValue(const void* obj, T& dest) const
+		{
+			dest = *(const T*)(((const char*)obj) + m_uiElementOffset);
+			return true;
+		}
+
+		virtual T& Value(void* obj) const
+		{
+			return *(T*)(((const char*)obj) + m_uiElementOffset);
+		}
+
+		virtual bool Archive(JaxStream& stream, void* obj)
+		{
+			stream.Archive(Value(obj));
+			return true;
+		}
+
+		virtual void CloneData(void* src, void* dest, JaxMap<JaxObject*, JaxObject*>& cloneMap)
+		{
+			Copy(Value(dest), Value(src), cloneMap);
+		}
+
+		virtual void CopyData(void* src, void* dest)
+		{
+			Value(dest) = Value(src);
+		}
+
+		virtual JaxProperty* GetInstance()
+		{
+			return JAX_NEW JaxValueProperty<T>();
+		}
+	};
+
 	template<typename T,typename NumType>
 	struct DataPropertyCreator
 	{
@@ -258,15 +415,22 @@ rtti=&sm_Type; \
 	};
 
 	template<typename T>
-	class AutoPropertyCreator
+	struct AutoPropertyCreator
 	{
-		JaxPropety* CreateProperty(const JaxUsedName& name, JaxRtti& owner, size_t offset, size_t flag);
+		JaxProperty* CreateProperty(const JaxUsedName& name, JaxRtti& owner, size_t offset, size_t flag);
+		JaxProperty* CreateFunctionProperty(const JaxUsedName& name, JaxFunction& owner, size_t offset, size_t flag);
+		JaxProperty* CreateProperty(const JaxUsedName& name, JaxRtti& owner, size_t offset, T high, T low, JAXREAL fstep, size_t flag);
 	};
 
 	class PropertyCreator
 	{
 	public:
-
+		template<typename ValueType>
+		static AutoPropertyCreator<ValueType>& GetAutoPropertyCreator(ValueType& valueType)
+		{
+			static AutoPropertyCreator<ValueType> apc;
+			return apc;
+		};
 	};
 
 	using FunctionTemplatePtr = void(*)(JaxObject* p, JaxFunction* pFun, void* para, void* ret);
@@ -381,5 +545,31 @@ rtti=&sm_Type; \
 	inline JaxProperty* DataPropertyCreator<T, NumType>::CreateFunctionProperty(const JaxUsedName& name, JaxRtti& owner, size_t offset, size_t numOffset)
 	{
 		return JAX_NEW JaxDataProperty<T, NumType>(owner, name, offset, numOffset);
+	}
+
+	template<typename T>
+	inline JaxProperty* AutoPropertyCreator<T>::CreateProperty(const JaxUsedName& name, JaxRtti& owner, size_t offset, size_t flag)
+	{
+		if (!(TIsJaxPointerType<T>::Value || TIsJaxSmartPointerType<T>::Value || TIsCustomType<T>::Value || TIsJaxType<T>::Value))
+		{
+			flag |= JaxProperty::F_NO_USE_GC;
+		}
+		return JAX_NEW JaxValueProperty<T>(owner, name, offset, flag);
+	}
+
+	template<typename T>
+	inline JaxProperty* AutoPropertyCreator<T>::CreateFunctionProperty(const JaxUsedName& name, JaxFunction& owner, size_t offset, size_t flag)
+	{
+		return JAX_NEW JaxValueProperty<T>(owner, name, offset, flag);
+	}
+
+	template<typename T>
+	inline JaxProperty* AutoPropertyCreator<T>::CreateProperty(const JaxUsedName& name, JaxRtti& owner, size_t offset, T high, T low, JAXREAL fstep, size_t flag)
+	{
+		if (!(TIsJaxPointerType<T>::Value || TIsJaxSmartPointerType<T>::Value || TIsCustomType<T>::Value || TIsJaxType<T>::Value))
+		{
+			flag |= JaxProperty::F_NO_USE_GC;
+		}
+		return JAX_NEW JaxValueProperty<T>(owner, name, offset, flag, true, high, low, fstep);
 	}
 }

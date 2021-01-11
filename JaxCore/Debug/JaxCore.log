@@ -1,7 +1,2 @@
-﻿  JaxFile.cpp
-  JaxMemManager.cpp
-  JaxSystem.cpp
-  JaxTimer.cpp
-  正在生成代码...
-    正在创建库 ..\bin\JaxCore_d.lib 和对象 ..\bin\JaxCore_d.exp
+﻿  JaxMemManager.cpp
   JaxCore.vcxproj -> D:\c++\Jax\JaxCore\..\bin\JaxCore_d.dll

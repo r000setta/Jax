@@ -28,6 +28,7 @@ namespace Jax
 		{
 			return m_pObject;
 		}
+		friend class JaxStream;
 	private:
 		T* m_pObject;
 		FORCEINLINE void SetObject(T* pObject)

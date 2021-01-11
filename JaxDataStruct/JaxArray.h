@@ -102,7 +102,7 @@ namespace Jax
 			m_uiGrowBy = m_uiAllocNum * m_uiGrowBy;
 
 			T* pBuffer = NULL;
-			pBuffer = this->New(m_uiBufferNum * bufferNum);
+			pBuffer = New(m_uiBufferNum + bufferNum);
 			if (!pBuffer)
 				return;
 			if (pBuffer && m_uiCurUse)

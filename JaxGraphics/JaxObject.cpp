@@ -3,11 +3,12 @@
 #include "JaxProperty.h"
 namespace Jax
 {
-	IMPLEMENT_RTTI_NoParent_NoCreateFun(JaxObject);
+	IMPLEMENT_RTTI_NoParent_NoCreateFun(JaxObject)
 	JaxMapOrder<JaxUsedName, FactoryFunction> JaxObject::sm_ClassFactory;
 	IMPLEMENT_INITIAL_NO_CLASS_FACTORY_BEGIN(JaxObject)
 	IMPLEMENT_INITIAL_NO_CLASS_FACTORY_END
 	BEGIN_ADD_PROPERTY_ROOT(JaxObject)
+	REGISTER_PROPERTY(m_uiFlag, Flag, JaxProperty::F_CLONE);
 	END_ADD_PROPERTY
 
 	JaxFastObjectManager::JaxFastObjectManager()
@@ -124,6 +125,98 @@ namespace Jax
 	bool JaxObject::IsDerived(const JaxRtti& type) const
 	{
 		return GetType().IsDerived(type);
+	}
+
+	JaxObject* JaxObject::_CloneCreateObject(JaxObject* object, JaxMap<JaxObject*, JaxObject*>& cloneMap)
+	{
+		JaxObject* newObject = NULL;
+		if (object) 
+		{
+			size_t idx = cloneMap.Find(object);
+			if (idx == cloneMap.GetNum())
+			{
+				JaxRtti& srcRtti = object->GetType();
+				if (object->IsHasFlag(OF_GCObject))
+				{
+					newObject = JaxObject::GetInstance(srcRtti.GetName());
+				}
+				else
+				{
+					newObject = JaxObject::GetNoGCInstance(srcRtti.GetName());
+				}
+				cloneMap.AddElement(object, newObject);
+				JaxRtti& destRtti = newObject->GetType();
+				for (size_t i = 0; i < srcRtti.GetPropertyNum(); ++i)
+				{
+					JaxProperty* property = srcRtti.GetProperty(i);
+					if (property->GetFlag() & JaxProperty::F_CLONE)
+					{
+						property->CloneData(object, newObject, cloneMap);
+					}
+					else if (property->GetFlag() & JaxProperty::F_COPY)
+					{
+						property->CopyData(object, newObject);
+					}
+				}
+			}
+			else
+			{
+				newObject = cloneMap[idx].value;
+			}
+		}
+		return newObject;
+	}
+
+	void JaxObject::_CloneObject(JaxObject* src, JaxObject* dest, JaxMap<JaxObject*, JaxObject*>& cloneMap)
+	{
+		if (src)
+		{
+			return;
+		}
+		size_t idx = cloneMap.Find(src);
+		if (idx == cloneMap.GetNum())
+		{
+			JaxRtti& srcRtti = src->GetType();
+			JaxRtti& destRtti = dest->GetType();
+			for (size_t i = 0; i < srcRtti.GetPropertyNum(); ++i)
+			{
+				JaxProperty* property = srcRtti.GetProperty(i);
+				if (property->GetFlag() & JaxProperty::F_CLONE)
+				{
+					property->CloneData(src, dest, cloneMap);
+				}
+				else if (property->GetFlag() & JaxProperty::F_COPY)
+				{
+					property->CopyData(src, dest);
+				}
+			}
+		}
+	}
+
+	JaxObject* JaxObject::CloneCreateObject(JaxObject* object)
+	{
+		JaxMap<JaxObject*, JaxObject*> cloneMap;
+		JaxObject* newObject = _CloneCreateObject(object, cloneMap);
+		for (size_t i = 0; i < cloneMap.GetNum(); ++i)
+		{
+			cloneMap[i].value->PostClone(cloneMap[i].key);
+		}
+		return newObject;
+	}
+
+	void JaxObject::CloneObject(JaxObject* src, JaxObject* dest)
+	{
+		JaxMap<JaxObject*, JaxObject*> cloneMap;
+		_CloneObject(src, dest, cloneMap);
+		for (size_t i = 0; i < cloneMap.GetNum(); ++i)
+		{
+			cloneMap[i].value->PostClone(cloneMap[i].key);
+		}
+	}
+
+	bool JaxObject::PostClone(JaxObject* src)
+	{
+		return true;
 	}
 
 	JaxObject* JaxObject::GetNoGCInstance(const JaxString& rttiName)

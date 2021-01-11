@@ -15,20 +15,41 @@ namespace Jax
 		}
 	};
 
+	class JaxTestObject :public JaxObject
+	{
+		DECLARE_RTTI;
+	public:
+		JaxTestObject() :m_IntTest(10), m_TestFloat(1.3f) {}
+		~JaxTestObject() {}
+
+		DECLARE_INITIAL
+
+		static bool InitialDefaultState();
+		static bool TerminalDefaultState();
+		int m_IntTest;
+		JAXREAL m_TestFloat;
+	};
+
+	DECLARE_PTR(JaxTestObject);
+	JAXTYPE_MARCO(JaxTestObject);
+	
 	class JaxTestSaveLoad :public JaxObject
 	{
 		DECLARE_RTTI
 	public:
-		JaxTestSaveLoad() :m_Int(10) {}
+		JaxTestSaveLoad() :m_Int(11) {}
 		~JaxTestSaveLoad() {}
 
 		DECLARE_INITIAL
-		int m_Int;
-	public:
+
 		static bool InitialDefaultState();
 		static bool TerminalDefaultState();
+	public:
+		int m_Int;
+		JaxUsedName m_Name;
 	};
 
-	DECLARE_PTR(JaxTestSaveLoad);
-	JAXTYPE_MARCO(JaxTestSaveLoad);
+	DECLARE_PTR(JaxTestSaveLoad)
+	JAXTYPE_MARCO(JaxTestSaveLoad)
+
 }

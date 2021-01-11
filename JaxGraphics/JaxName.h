@@ -6,11 +6,14 @@
 
 namespace Jax
 {
+	class JaxObject;
+
 #define DECLARE_INITIAL \
 public:\
 static bool RegisterMainFactory(); \
 static bool InitialClassFactory(); \
 static bool sm_bRegisterMainFactory; \
+static JaxObject* FactoryFunc(); \
 static bool InitialProperty(JaxRtti*); \
 static bool TerminalProperty();
 
@@ -26,7 +29,7 @@ JaxObject* classname::FactoryFunc()\
 {\
 return JAX_NEW classname;\
 }\
-bool classname::RegisterFactory()\
+bool classname::RegisterMainFactory()\
 {\
 if(!sm_bRegisterMainFactory)\
 {
@@ -34,7 +37,7 @@ if(!sm_bRegisterMainFactory)\
 #define IMPLEMENT_INITIAL_END \
 JaxMain::AddInitialFunction(InitialClassFactory);\
 JaxMain::AddInitialPropertyFunction(InitialProperty);\
-JaxMain::AddInitialPropertyFunction(TerminalProperty);\
+JaxMain::AddTerminalPropertyFunction(TerminalProperty);\
 sm_bRegisterMainFactory=true;\
 }\
 return sm_bRegisterMainFactory;\
