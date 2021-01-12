@@ -36,7 +36,7 @@ namespace Jax
 			AT_CLEAR_OBJECT_PROPERTY_GC,
 			AT_LOAD_OBJECT_COLLECT_GC,
 		};
-
+			
 		template<typename T>
 		void Archive(T& obj)
 		{
@@ -79,6 +79,99 @@ namespace Jax
 				else
 				{
 					Read((void*)&obj, sizeof(T));
+				}
+			}
+			else if (m_uiStreamFlag == AT_SAVE)
+			{
+				if (TIsJaxResourceProxyPointType<T>::Value)
+				{
+
+				}
+				else if (TIsJaxPointerType<T>::Value)
+				{
+					JaxObject*& tmp = *(JaxObject**)(void*)&obj;
+					WriteObjectPtr(tmp);
+				}
+				else if (TIsJaxSmartPointerType<T>::Value)
+				{
+					JaxObjectPtr& tmp = *(JaxObjectPtr*)(void*)&obj;
+					WriteObjectPtr(tmp);
+				}
+				else if (TIsJaxStringType<T>::Value)
+				{
+					JaxString& tmp = *(JaxString*)(void*)&obj;
+					WriteString(tmp);
+				}
+				else if (TIsCustomType<T>::Value)
+				{
+					JaxCustomArchiveObject* tmp = (JaxCustomArchiveObject*)(void*)&obj;
+					if (tmp)
+					{
+						tmp->Archive(*this);
+					}
+				}
+				else if (TIsJaxType<T>::Value)
+				{
+					JaxObject* tmp = (JaxObject*)&obj;
+					WriteObjectPtr(tmp);
+				}
+				else
+				{
+					Write((void*)&obj, sizeof(T));
+				}
+			}
+			else if (m_uiStreamFlag == AT_REGISTER || m_uiStreamFlag == AT_POSTLOAD)
+			{
+				if (TIsJaxPointerType<T>::Value)
+				{
+					JaxObject*& tmp = *(JaxObject**)(void*)&obj;
+					ArchiveAll(tmp);
+				}
+				else if (TIsJaxSmartPointerType<T>::Value)
+				{
+					JaxObjectPtr& tmp = *(JaxObjectPtr*)(void*)&obj;
+					ArchiveAll(tmp);
+				}
+				else if (TIsCustomType<T>::Value)
+				{
+					JaxCustomArchiveObject* tmp = (JaxCustomArchiveObject*)(void*)&obj;
+					if (tmp)
+					{
+						tmp->Archive(*this);
+					}
+				}
+				else if (TIsJaxType<T>::Value)
+				{
+					JaxObject* tmp = (JaxObject*)&obj;
+					ArchiveAll(tmp);
+				}
+			}
+			else if (m_uiStreamFlag == AT_SIZE)
+			{
+				if (TIsJaxResourceProxyPointType<T>::Value)
+				{
+
+				}
+				else if (TIsJaxPointerType<T>::Value||TIsJaxSmartPointerType<T>::Value||TIsJaxType<T>::Value)
+				{
+					m_uiArchivePropertySize += 4;
+				}
+				else if (TIsJaxStringType<T>::Value)
+				{
+					JaxString& tmp = *(JaxString*)(void*)&obj;
+					m_uiArchivePropertySize += GetStrDistUse(tmp);
+				}
+				else if (TIsCustomType<T>::Value)
+				{
+					JaxCustomArchiveObject* tmp = (JaxCustomArchiveObject*)(void*)&obj;
+					if (tmp)
+					{
+						tmp->Archive(*this);
+					}
+				}
+				else
+				{
+					m_uiArchivePropertySize += sizeof(T);
 				}
 			}
 		}
@@ -148,6 +241,12 @@ namespace Jax
 		template<typename T>
 		bool ReadObjectPtr(JaxPointer<T>& pointer);
 
+		template<typename T>
+		bool WriteObjectPtr(T* const& obj);
+
+		template<typename T>
+		bool WriteObjectPtr(const JaxPointer<T>& pointer);
+
 		const JaxObject* GetObjectByRtti(const JaxRtti& rtti);
 
 	protected:
@@ -178,6 +277,23 @@ namespace Jax
 		if (!Read(&p, sizeof(T*)))
 			return false;
 		pointer.SetObject(p);
+		return true;
+	}
+
+	template<typename T>
+	inline bool JaxStream::WriteObjectPtr(T* const& obj)
+	{
+		if (!Write(&obj, sizeof(T*)))
+			return false;
+		return true;
+	}
+
+	template<typename T>
+	inline bool JaxStream::WriteObjectPtr(const JaxPointer<T>& pointer)
+	{
+		T* p = pointer;
+		if (!Write(&p, sizeof(T*)))
+			return false;
 		return true;
 	}
 

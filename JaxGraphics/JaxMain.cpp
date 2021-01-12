@@ -62,6 +62,7 @@ namespace Jax
 				return false;
 			}
 		}
+
 		sm_pInitialArray->Sort(0, sm_pInitialArray->GetNum() - 1, PriorityCompare());
 		for (size_t i = 0; i < sm_pInitialArray->GetNum(); ++i)
 		{

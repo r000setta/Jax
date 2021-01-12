@@ -192,6 +192,17 @@ namespace Jax
 				stream.WriteString(JaxString::sm_StringNULL);
 			}
 		}
+		else if (stream.GetStreamFlag() == JaxStream::AT_SIZE)
+		{
+			if (m_pName)
+			{
+				stream.AddBufferSize(JaxStream::GetStrDistUse(m_pName->GetString()));
+			}
+			else
+			{
+				stream.AddBufferSize(JaxStream::GetStrDistUse(JaxString::sm_StringNULL));
+			}
+		}
 	}
 
 	void JaxUsedName::CopyFrom(JaxCustomArchiveObject* object, JaxMap<JaxObject*, JaxObject*>& cloneMap)
@@ -202,7 +213,7 @@ namespace Jax
 
 	bool JaxUsedName::InitialDefaultState()
 	{
-		return true;
+		return true; 
 	}
 
 	bool JaxUsedName::TerminalDefaultState()

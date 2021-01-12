@@ -5,7 +5,7 @@
 
 namespace Jax
 {
-	using Function = bool(*)();
+	typedef bool (*Function)();
 	class JaxRtti;
 	using FunctionProperty = bool(*)(JaxRtti*);
 	

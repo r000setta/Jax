@@ -208,6 +208,7 @@ namespace Jax
 			m_uiBufferSize += sizeof(JaxObject*);
 			objectTable[i].m_pAddr = m_pObjectArray[i];
 
+			auto name = m_pObjectArray[i]->GetType().GetName();
 			m_uiBufferSize += GetStrDistUse(m_pObjectArray[i]->GetType().GetName());
 			objectTable[i].m_RttiName = m_pObjectArray[i]->GetType().GetName();
 
@@ -231,13 +232,13 @@ namespace Jax
 			objectTable[i].m_uiObjectPropertyNum = 0;
 			for (size_t j = 0; j < rtti.GetPropertyNum(); ++j)
 			{
-				JaxProperty* property = rtti.GetProperty(i);
+				JaxProperty* property = rtti.GetProperty(j);
 				
 				if (property->GetFlag() & JaxProperty::F_SAVE_LOAD)
 				{
 					m_uiBufferSize += sizeof(size_t);
 					objectTable[i].m_ObjectPropertyTable[j].m_PropertyName = property->GetName().GetString();
-					objectTable[i].m_ObjectPropertyTable[j].m_uiNameID = property->GetName().GetLength();
+					objectTable[i].m_ObjectPropertyTable[j].m_uiNameID = property->GetName().GetNameCode();
 					
 					m_uiBufferSize += sizeof(size_t);
 					objectTable[i].m_uiObjectPropertyNum++;
@@ -247,7 +248,7 @@ namespace Jax
 
 			for (size_t j = 0; j < rtti.GetPropertyNum(); ++j)
 			{
-				JaxProperty* property = rtti.GetProperty(i);
+				JaxProperty* property = rtti.GetProperty(j);
 				if (property->GetFlag() & JaxProperty::F_SAVE_LOAD)
 				{
 					objectTable[i].m_ObjectPropertyTable[j].m_uiOffset = m_uiBufferSize;
@@ -265,7 +266,7 @@ namespace Jax
 			m_pObjectArray[i]->BeforeSave();
 		}
 
-		JAXMAC_DELETE(m_pcBuffer);
+		JAXMAC_DELETEA(m_pcBuffer);
 		m_pcBuffer = JAX_NEW unsigned char[m_uiBufferSize];
 		if (!m_pcBuffer)
 		{
@@ -315,6 +316,11 @@ namespace Jax
 					property->Archive(*this, m_pObjectArray[i]);
 				}
 			}
+		}
+
+		for (size_t i = 0; i < m_pObjectArray.GetNum(); ++i)
+		{
+			m_pObjectArray[i]->PostSave();
 		}
 
 		JaxFile* file = JAX_NEW JaxFile();

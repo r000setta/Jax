@@ -5,18 +5,49 @@
 #include "JaxCommand.h"
 #include "JaxTimer.h"
 #include "JaxMath.h"
+#include "JaxMain.h"
 #include "JaxArray.h"
 
 namespace Jax
 {
 
-//#define DECLARE_APPLICATION(classname) \
-//public:\
-//static bool RegisterMainFactory();\
-//private:\
-//static bool InitialApplication();\
-//static bool TerminalApplication();\
-//static bool sm_bRegisterMainFactory();
+#define DECLARE_APPLICATION(classname) \
+public: \
+static bool RegisterMainFactory();\
+private: \
+static bool InitialApplication();\
+static bool TerminalApplication();\
+static bool sm_bRegisterMainFactory;
+
+#define IMPLEMENT_APPLICATION(classname) \
+static bool gs_bStreamRegistered_classname=classname::RegisterMainFactory(); \
+bool classname::sm_bRegisterMainFactory=false; \
+bool classname::RegisterMainFactory() \
+{ \
+if(!sm_bRegisterMainFactory) \
+{ \
+JaxMain::AddInitialFuntion(classname::InitialApplication); \
+JaxMain::AddTerminalFuntion(classname::TerminalApplication); \
+sm_bRegisterMainFactory=true; \
+} \
+return sm_bRegisterMainFactory; \
+} \
+bool classname::InitialApplication() \
+{ \
+classname::sm_pApplication=JAX_NEW classname(); \
+if(!classname::sm_pApplication) \
+return false; \
+return true; \
+} \
+bool classname::TerminalApplication() \
+{ \
+if(classname::sm_pApplication) \
+{ \
+JAX_DELETE(classname::sm_pApplication); \
+} \
+return true; \
+}
+
 
 	class JaxApplication :public JaxMemObject
 	{

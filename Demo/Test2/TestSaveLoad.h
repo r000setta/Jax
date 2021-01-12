@@ -3,41 +3,16 @@
 #include "JaxName.h"
 
 namespace Jax
-{
-	struct TestStruct
-	{
-		int m_Int;
-		JAXREAL m_Float;
-		TestStruct()
-		{
-			m_Float = 4.0f;
-			m_Int = 1;
-		}
-	};
-
-	class JaxTestObject :public JaxObject
-	{
-		DECLARE_RTTI;
-	public:
-		JaxTestObject() :m_IntTest(10), m_TestFloat(1.3f) {}
-		~JaxTestObject() {}
-
-		DECLARE_INITIAL
-
-		static bool InitialDefaultState();
-		static bool TerminalDefaultState();
-		int m_IntTest;
-		JAXREAL m_TestFloat;
-	};
-
-	DECLARE_PTR(JaxTestObject);
-	JAXTYPE_MARCO(JaxTestObject);
-	
+{	
 	class JaxTestSaveLoad :public JaxObject
 	{
 		DECLARE_RTTI
 	public:
-		JaxTestSaveLoad() :m_Int(11) {}
+		//JaxTestSaveLoad() :m_Int(123), m_Name(_T("test")), m_TestString(_T("123")) {}
+		JaxTestSaveLoad()
+		{
+			m_FixedFloatData = JAX_NEW JAXREAL[3];
+		}
 		~JaxTestSaveLoad() {}
 
 		DECLARE_INITIAL
@@ -45,11 +20,15 @@ namespace Jax
 		static bool InitialDefaultState();
 		static bool TerminalDefaultState();
 	public:
-		int m_Int;
-		JaxUsedName m_Name;
+		JaxArray<int> m_ArrayInt;
+		//int m_Int;
+		//JAXREAL* m_FloatData;
+		JAXREAL* m_FixedFloatData;
+		//size_t m_FloatDataNum;
+		//JaxString m_TestString;
+		//JaxUsedName m_Name;
 	};
 
 	DECLARE_PTR(JaxTestSaveLoad)
 	JAXTYPE_MARCO(JaxTestSaveLoad)
-
 }
