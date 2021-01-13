@@ -161,6 +161,8 @@
     <ClInclude Include="JaxPriority.h" />
     <ClInclude Include="JaxProperty.h" />
     <ClInclude Include="JaxReference.h" />
+    <ClInclude Include="JaxRenderer.h" />
+    <ClInclude Include="JaxRenderState.h" />
     <ClInclude Include="JaxResouceManager.h" />
     <ClInclude Include="JaxRtti.h" />
     <ClInclude Include="JaxStream.h" />

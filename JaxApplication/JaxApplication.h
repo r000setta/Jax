@@ -26,8 +26,8 @@ bool classname::RegisterMainFactory() \
 { \
 if(!sm_bRegisterMainFactory) \
 { \
-JaxMain::AddInitialFuntion(classname::InitialApplication); \
-JaxMain::AddTerminalFuntion(classname::TerminalApplication); \
+JaxMain::AddInitialFunction(classname::InitialApplication); \
+JaxMain::AddTerminalFunction(classname::TerminalApplication); \
 sm_bRegisterMainFactory=true; \
 } \
 return sm_bRegisterMainFactory; \
@@ -83,12 +83,27 @@ return true; \
 	public:
 		virtual bool Main(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow);
 		virtual bool Main(int argc, char* argv[]);
-
+		virtual bool PreInitial();
+		virtual bool OnInitial();
+		virtual bool OnTerminal();
+		virtual bool PostUpdate();
+		virtual bool PreUpdate();
 		virtual bool OnDraw();
 		virtual void OnMove(int xPos,int yPos);
 		virtual void OnReSize(int width, int height);
 		virtual void OnKeyDown(unsigned int key);
 		virtual void OnKeyUp(unsigned int key);
+		virtual void OnLButtonDown(int xPos, int yPos);
+		virtual void OnLButtonUp(int xPos, int yPos);
+		virtual void OnRButtonDown(int xPos, int yPos);
+		virtual void OnRButtonUp(int xPos, int yPos);
+		virtual void OnMButtonDown(int xPos, int yPos);
+		virtual void OnMButtonUp(int xPos, int yPos);
+		virtual void OnMouseMove(int xPos, int yPos);
+		virtual void OnMouseWheel(int xPos, int yPos, int zDet);
+
+		virtual void ChangeScreenSize(size_t width, size_t height, bool isWindow, bool isMaxScreen = false);
+		virtual void InputMsgProc(size_t inputType, size_t event, size_t key, int x, int y, int z);
 
 		bool m_bIsActive;
 		bool m_bIsRunning;
@@ -102,11 +117,15 @@ return true; \
 		JaxWindowApplication();
 		virtual ~JaxWindowApplication();
 
+		virtual bool Main(HINSTANCE hInstance, LPSTR lpCmdLine, int nCmdShow);
+		virtual bool PreInitial();
+		virtual void ChangeScreenSize(size_t width, size_t height, bool isWindow, bool isMaxScreen = false);
 	protected:
 		virtual bool CreateRenderer();
 		virtual bool CreateInput();
 
 		virtual bool CreateAppWindow();
+		virtual bool CreateOPGL();
 
 		static LRESULT WINAPI MsgProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 

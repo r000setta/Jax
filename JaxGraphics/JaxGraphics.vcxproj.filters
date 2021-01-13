@@ -7,6 +7,9 @@
     <Filter Include="Core\Stream">
       <UniqueIdentifier>{f93f7418-1f9e-44c8-bcf5-fa055d9d33c0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{83064ffc-c811-4001-a1da-8bdfb5b61f4b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JaxReference.h">
@@ -47,6 +50,12 @@
     </ClInclude>
     <ClInclude Include="JaxMain.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxRenderer.h">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxRenderState.h">
+      <Filter>Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

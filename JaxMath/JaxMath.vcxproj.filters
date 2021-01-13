@@ -21,12 +21,18 @@
     <ClInclude Include="JaxVector3.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="JaxVector2.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JaxMath.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="JaxVector3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxVector2.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
