@@ -152,6 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="JaxBind.h" />
     <ClInclude Include="JaxCustomArchiveObject.h" />
     <ClInclude Include="JaxGraphic.h" />
     <ClInclude Include="JaxMain.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="JaxType.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="JaxBind.cpp" />
     <ClCompile Include="JaxCustomArchiveObject.cpp" />
     <ClCompile Include="JaxMain.cpp" />
     <ClCompile Include="JaxName.cpp" />
@@ -176,6 +178,7 @@
     <ClCompile Include="JaxPriority.cpp" />
     <ClCompile Include="JaxProperty.cpp" />
     <ClCompile Include="JaxReference.cpp" />
+    <ClCompile Include="JaxRenderer.cpp" />
     <ClCompile Include="JaxResouceManager.cpp" />
     <ClCompile Include="JaxRtti.cpp" />
     <ClCompile Include="JaxStream.cpp" />

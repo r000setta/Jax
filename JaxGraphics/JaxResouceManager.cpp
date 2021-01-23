@@ -55,6 +55,8 @@ namespace Jax
 	{
 	}
 
+	bool JaxResourceManager::sm_bRenderThread = false;
+
 	IMPLEMENT_PRIORITY(JaxResourceManager)
 	IMPLEMENT_INITIAL_ONLY_BEGIN(JaxResourceManager);
 	ADD_INITIAL_FUNCTION_WITH_PRIORITY(InitialDefaultState)

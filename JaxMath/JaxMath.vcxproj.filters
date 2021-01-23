@@ -22,7 +22,16 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="JaxVector2.h">
-      <Filter>源文件</Filter>
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxVector4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxMatrix3x3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxMatrix4x4.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -33,6 +42,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="JaxVector2.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxMatrix3x3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxVector4.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxMatrix4x4.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

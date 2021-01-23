@@ -169,6 +169,15 @@ namespace Jax
 #endif // WINDOWS
 	}
 
+	FORCEINLINE void JaxWcsToMbs(char* dest, size_t sizeInByte, const wchar_t* src, size_t sizeInWord)
+	{
+#ifdef WINDOWS
+		wcstombs_s(0, dest, sizeInByte, src, sizeInWord);
+#else
+		return;
+#endif // WINDOWS
+	}
+
 #define JAX_ASSERT(Exp) assert(Exp);
 
 	template<typename T>

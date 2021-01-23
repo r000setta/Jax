@@ -3,6 +3,7 @@
 
 namespace Jax
 {
+	class JaxMatrix3x3;
 	class JAXMATH_API JaxVector3
 	{
 	public:
@@ -49,6 +50,8 @@ namespace Jax
 		JaxVector3 operator-(const JaxVector3& v) const;
 		JaxVector3 operator/(const JaxVector3& v) const;
 		JaxVector3 operator*(const JaxVector3& v) const;
+
+		JaxVector3 operator*(const JaxMatrix3x3& mat) const;
 
 		JAXREAL Dot(const JaxVector3& v) const;
 		bool operator==(const JaxVector3& v) const;

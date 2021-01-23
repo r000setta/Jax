@@ -75,6 +75,8 @@ return s_##ResourceName##Set; \
 		static bool InitialDefaultState();
 		static bool TerminalDefaultState();
 		
+	public:
+		static bool sm_bRenderThread;
 	};
 
 	template<typename KEY, typename VALUE>
@@ -150,6 +152,5 @@ return s_##ResourceName##Set; \
 		JAX_ASSERT(i < m_Resource.GetNum());
 		return &m_Resource[i];
 	}
-
 
 }

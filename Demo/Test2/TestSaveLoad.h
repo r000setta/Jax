@@ -25,7 +25,7 @@ namespace Jax
 		//JAXREAL* m_FloatData;
 		JAXREAL* m_FixedFloatData;
 		//size_t m_FloatDataNum;
-		//JaxString m_TestString;
+		JaxString m_TestString;
 		//JaxUsedName m_Name;
 	};
 

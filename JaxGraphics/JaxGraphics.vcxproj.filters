@@ -57,6 +57,9 @@
     <ClInclude Include="JaxRenderState.h">
       <Filter>Render</Filter>
     </ClInclude>
+    <ClInclude Include="JaxBind.h">
+      <Filter>Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JaxReference.cpp">
@@ -89,5 +92,7 @@
     <ClCompile Include="JaxResouceManager.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="JaxRenderer.cpp" />
+    <ClCompile Include="JaxBind.cpp" />
   </ItemGroup>
 </Project>

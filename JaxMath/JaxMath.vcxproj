@@ -147,13 +147,19 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="JaxMath.h" />
+    <ClInclude Include="JaxMatrix3x3.h" />
+    <ClInclude Include="JaxMatrix4x4.h" />
     <ClInclude Include="JaxVector2.h" />
     <ClInclude Include="JaxVector3.h" />
+    <ClInclude Include="JaxVector4.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JaxMath.cpp" />
+    <ClCompile Include="JaxMatrix3x3.cpp" />
+    <ClCompile Include="JaxMatrix4x4.cpp" />
     <ClCompile Include="JaxVector2.cpp" />
     <ClCompile Include="JaxVector3.cpp" />
+    <ClCompile Include="JaxVector4.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
