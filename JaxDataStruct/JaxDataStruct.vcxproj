@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JaxArray.h" />
+    <ClInclude Include="JaxBitArray.h" />
     <ClInclude Include="JaxContainer.h" />
     <ClInclude Include="JaxMap.h" />
     <ClInclude Include="JaxString.h" />

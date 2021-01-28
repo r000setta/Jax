@@ -9,5 +9,5 @@
 
 namespace Jax
 {
-
+#define TEXLEVEL 16
 }

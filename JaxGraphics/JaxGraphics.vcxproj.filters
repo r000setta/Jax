@@ -10,6 +10,24 @@
     <Filter Include="Render">
       <UniqueIdentifier>{83064ffc-c811-4001-a1da-8bdfb5b61f4b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Render\RenderState">
+      <UniqueIdentifier>{616c0a93-1fe7-4761-bb3e-3b0d7649216a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\RenderTarget">
+      <UniqueIdentifier>{2b3daf29-a494-4bf4-b695-7ef7226a1852}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\Texture">
+      <UniqueIdentifier>{04493f46-e9d1-43e6-9887-90afccbc15ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\Material">
+      <UniqueIdentifier>{baf0a1ba-e6f5-4cc1-8a96-ad3f9c5cf4de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\Material\Shader">
+      <UniqueIdentifier>{c951e367-a3d6-4a2a-a9ce-e2e6fa51a658}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\Vertex">
+      <UniqueIdentifier>{c06ec014-f0ff-47ed-bd0c-b26577bf6aae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JaxReference.h">
@@ -60,6 +78,42 @@
     <ClInclude Include="JaxBind.h">
       <Filter>Render</Filter>
     </ClInclude>
+    <ClInclude Include="JaxBlendState.h">
+      <Filter>Render\RenderState</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxRasterizeState.h">
+      <Filter>Render\RenderState</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxDepthStencilState.h">
+      <Filter>Render\RenderState</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxRenderTarget.h">
+      <Filter>Render\RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxTexture.h">
+      <Filter>Render\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Jax2DTexture.h">
+      <Filter>Render\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxShader.h">
+      <Filter>Render\Material\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxResource.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxSamplerState.h">
+      <Filter>Render\RenderState</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxTexAllState.h">
+      <Filter>Render\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxVertexFormat.h">
+      <Filter>Render\Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxDataBuffer.h">
+      <Filter>Render\Vertex</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JaxReference.cpp">
@@ -92,7 +146,39 @@
     <ClCompile Include="JaxResouceManager.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="JaxRenderer.cpp" />
-    <ClCompile Include="JaxBind.cpp" />
+    <ClCompile Include="JaxBind.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxRenderer.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxBlendState.cpp">
+      <Filter>Render\RenderState</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxDepthStencilState.cpp">
+      <Filter>Render\RenderState</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxRasterizeState.cpp">
+      <Filter>Render\RenderState</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxTexture.cpp">
+      <Filter>Render\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Jax2DTexture.cpp">
+      <Filter>Render\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxResource.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxVertexFormat.cpp">
+      <Filter>Render\Vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxTexAllState.cpp">
+      <Filter>Render\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxSamplerState.cpp">
+      <Filter>Render\RenderState</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxDataBuffer.cpp" />
   </ItemGroup>
 </Project>

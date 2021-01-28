@@ -221,5 +221,6 @@ namespace Jax
 		t2 = tmp;
 	}
 
+#define BIT(i) (1<<i)
 }
 

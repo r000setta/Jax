@@ -1,7 +1,2 @@
-﻿cl : 命令行 warning D9035: “Gm”选项已否决，并将在将来的版本中移除
-  JaxString.cpp
-  JaxArray.cpp
-  正在生成代码...
-JaxArray.obj : warning LNK4075: 忽略“/EDITANDCONTINUE”(由于“/SAFESEH”规范)
-    正在创建库 ..\bin\JaxDataStruct_d.lib 和对象 ..\bin\JaxDataStruct_d.exp
-  JaxDataStruct.vcxproj -> D:\c++\Jax\JaxDataStruct\..\bin\JaxDataStruct_d.dll
+﻿  JaxDataStruct.vcxproj -> D:\c++\Jax\JaxDataStruct\..\bin\JaxDataStruct_d.dll
+D:\vcpkg\scripts\buildsystems\msbuild\vcpkg.targets(109,5): error MSB3073: 命令“C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -noprofile -File "D:\vcpkg\scripts\buildsystems\msbuild\applocal.ps1" "D:\c++\Jax\JaxDataStruct\..\bin\JaxDataStruct_d.dll" "D:\vcpkg\installed\x86-windows\debug\bin" ".\Debug\JaxDataStruct.tlog\JaxDataStruct.write.1u.tlog" ".\Debug\vcpkg.applocal.log"”已退出，代码为 -1。

@@ -100,4 +100,57 @@ namespace Jax
 			m_uiCurID = (m_uiCurID + 1) % m_uiSwapChainNum;
 		}
 	}
+
+	JaxResourceIdentifier* JaxBind::GetIdentifier()
+	{
+		if (!m_InfoArray.GetNum())
+		{
+			return NULL;
+		}
+		JaxResourceIdentifier* id = m_InfoArray[m_uiCurID].ID;
+		return id;
+	}
+
+	bool JaxBind::LoadResource(JaxRenderer* pRender)
+	{
+		if (!pRender) return false;
+		if (m_uiMemType == MT_RAM)
+		{
+			return true;
+		}
+		if (m_uiSwapChainNum == m_InfoArray.GetNum())
+		{
+			return true;
+		}
+		else
+		{
+			m_pUser = pRender;
+			for (size_t i = 0; i < m_uiSwapChainNum; ++i)
+			{
+				JaxResourceIdentifier* id = NULL;
+				if (!OnLoadResource(id))
+					return false;
+				if (!id)
+					return false;
+				Bind(id);
+			}
+			if (!JaxResourceManager::sm_bRenderThread)
+			{
+				ClearInfo();
+			}
+			return false;
+		}
+	}
+
+	bool JaxBind::ReleaseResource()
+	{
+		for (size_t i = 0; i < m_InfoArray.GetNum(); ++i)
+		{
+			INFO_TYPE& info = m_InfoArray[i];
+			if (!OnReleaseResource(info.ID))
+				return false;
+		}
+		m_InfoArray.Clear();
+		return true;
+	}
 }

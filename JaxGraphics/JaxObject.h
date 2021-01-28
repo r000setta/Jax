@@ -14,6 +14,9 @@ namespace Jax
 	class JaxObject;
 	typedef JaxObject* (*FactoryFunction)();
 	class JaxStream;
+	class JaxResourceProxyBase;
+	class JaxRenderer;
+	class JaxResourceIdentifier;
 	class JaxFastObjectManager
 	{
 	public:
@@ -72,6 +75,8 @@ namespace Jax
 		bool IsDerived(const JaxObject* pObject) const;
 		bool IsSameType(const JaxRtti& type) const;
 		bool IsDerived(const JaxRtti& type) const;
+
+		virtual void LoadEvent(JaxResourceProxyBase* proxy, int data = 0);
 
 		DECLARE_INITIAL_NO_CLASS_FACTORY;
 

@@ -34,8 +34,14 @@ namespace Jax
 		IDXGISwapChain* m_pMainChain;
 		DXGI_SWAP_CHAIN_DESC m_SwapChainDesc;
 
+		ID3D11Texture2D* m_pMainDepthStencil;
+		ID3D11DepthStencilView* m_pMainDepthStencilView;
+
 		ID3D11RenderTargetView* m_pMainRenderTargetView;
 		ID3D11RenderTargetView** m_pChainRenderTargetView;
+
+		ID3D11Texture2D** m_pChainDepthStencil;
+		ID3D11DepthStencilView** m_pChainDepthStencilView;
 
 		static DWORD sm_dwAlphaBlend[];
 		static DWORD sm_dwAlphaBlendOP[];

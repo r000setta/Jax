@@ -152,8 +152,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Jax2DTexture.h" />
     <ClInclude Include="JaxBind.h" />
+    <ClInclude Include="JaxBlendState.h" />
     <ClInclude Include="JaxCustomArchiveObject.h" />
+    <ClInclude Include="JaxDataBuffer.h" />
+    <ClInclude Include="JaxDepthStencilState.h" />
     <ClInclude Include="JaxGraphic.h" />
     <ClInclude Include="JaxMain.h" />
     <ClInclude Include="JaxName.h" />
@@ -161,27 +165,45 @@
     <ClInclude Include="JaxPointer.h" />
     <ClInclude Include="JaxPriority.h" />
     <ClInclude Include="JaxProperty.h" />
+    <ClInclude Include="JaxRasterizeState.h" />
     <ClInclude Include="JaxReference.h" />
     <ClInclude Include="JaxRenderer.h" />
     <ClInclude Include="JaxRenderState.h" />
+    <ClInclude Include="JaxRenderTarget.h" />
     <ClInclude Include="JaxResouceManager.h" />
+    <ClInclude Include="JaxResource.h" />
     <ClInclude Include="JaxRtti.h" />
+    <ClInclude Include="JaxSamplerState.h" />
+    <ClInclude Include="JaxShader.h" />
     <ClInclude Include="JaxStream.h" />
+    <ClInclude Include="JaxTexAllState.h" />
+    <ClInclude Include="JaxTexture.h" />
     <ClInclude Include="JaxType.h" />
+    <ClInclude Include="JaxVertexFormat.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Jax2DTexture.cpp" />
     <ClCompile Include="JaxBind.cpp" />
+    <ClCompile Include="JaxBlendState.cpp" />
     <ClCompile Include="JaxCustomArchiveObject.cpp" />
+    <ClCompile Include="JaxDataBuffer.cpp" />
+    <ClCompile Include="JaxDepthStencilState.cpp" />
     <ClCompile Include="JaxMain.cpp" />
     <ClCompile Include="JaxName.cpp" />
     <ClCompile Include="JaxObject.cpp" />
     <ClCompile Include="JaxPriority.cpp" />
     <ClCompile Include="JaxProperty.cpp" />
+    <ClCompile Include="JaxRasterizeState.cpp" />
     <ClCompile Include="JaxReference.cpp" />
     <ClCompile Include="JaxRenderer.cpp" />
     <ClCompile Include="JaxResouceManager.cpp" />
+    <ClCompile Include="JaxResource.cpp" />
     <ClCompile Include="JaxRtti.cpp" />
+    <ClCompile Include="JaxSamplerState.cpp" />
     <ClCompile Include="JaxStream.cpp" />
+    <ClCompile Include="JaxTexAllState.cpp" />
+    <ClCompile Include="JaxTexture.cpp" />
+    <ClCompile Include="JaxVertexFormat.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

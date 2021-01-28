@@ -127,6 +127,11 @@ namespace Jax
 		return GetType().IsDerived(type);
 	}
 
+	void JaxObject::LoadEvent(JaxResourceProxyBase* proxy, int data)
+	{
+
+	}
+
 	JaxObject* JaxObject::_CloneCreateObject(JaxObject* object, JaxMap<JaxObject*, JaxObject*>& cloneMap)
 	{
 		JaxObject* newObject = NULL;

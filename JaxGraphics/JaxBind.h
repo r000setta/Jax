@@ -1,5 +1,7 @@
 #pragma once
 #include "JaxObject.h"
+#include "JaxRenderer.h"
+#include "JaxResouceManager.h"
 namespace Jax
 {
 	class JAXGRAPHIC_API JaxResourceIdentifier
@@ -52,8 +54,45 @@ namespace Jax
 		void Exchange();
 		JaxResourceIdentifier* GetIdentifier();
 
+		virtual bool LoadResource(JaxRenderer* pRender);
+		virtual bool ReleaseResource();
+
+		virtual size_t GetByteSize() const;
+
+		FORCEINLINE void SetLockFlag(size_t flag)
+		{
+			if (flag > LF_MAX)
+			{
+				flag = LF_NOOVERWRITE;
+			}
+			m_uiFlag = flag;
+		}
+
+		FORCEINLINE size_t GetLockFlag() const
+		{
+			return m_uiLockFlag;
+		}
+
+		FORCEINLINE void SetMemType(size_t memType)
+		{
+			if (memType < MT_MAX)
+			{
+				m_uiMemType = memType;
+			}
+		}
+
+		FORCEINLINE size_t GetMemType() const
+		{
+			return m_uiMemType;
+		}
+
+		FORCEINLINE size_t GetSwapChainNum() const
+		{
+			return m_uiSwapChainNum;
+		}
+
 	protected:
-		virtual void ClearInfo();
+		virtual void ClearInfo() {}
 		friend class JaxRenderer;
 
 		void Bind(JaxResourceIdentifier* id);
@@ -74,6 +113,8 @@ namespace Jax
 		size_t m_uiMemType;
 		size_t m_uiClearState;
 
+		virtual bool OnLoadResource(JaxResourceIdentifier*& id) = 0;
+		virtual bool OnReleaseResource(JaxResourceIdentifier* id) = 0;
 
 	};
 

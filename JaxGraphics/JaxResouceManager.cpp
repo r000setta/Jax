@@ -1,9 +1,16 @@
 #include "JaxResouceManager.h"
-
+#include "JaxDepthStencilState.h"
+#include "JaxRasterizeState.h"
+#include "JaxBlendState.h"
+#include "JaxSamplerState.h"
+#include "JaxImage.h"
+#include "JaxTexAllState.h"
 namespace Jax
 {
 
 	JaxCriticalSection JaxResourceManager::sm_NameCri;
+
+	JaxString JaxResourceManager::sm_TexturePath;
 	JaxResourceManager::~JaxResourceManager()
 	{
 
@@ -53,6 +60,165 @@ namespace Jax
 
 	void JaxResourceManager::CacheResource()
 	{
+	}
+
+	JaxDepthStencilState* JaxResourceManager::CreateDepthStencilState(const JaxDepthStencilDesc& desc)
+	{
+		size_t size = 0;
+		void* pData = desc.GetCRC32Data(size);
+		size_t hashCode = CRC32Compute(pData, size);
+
+		JaxDepthStencilState* state = (JaxDepthStencilState*)JaxResourceManager::GetDepthStencilStateSet().CheckIsHaveTheResource(hashCode);
+		if (state) return state;
+		state = JAX_NEW JaxDepthStencilState();
+		state->m_DepthStencilDesc = desc;
+		JaxResourceManager::GetDepthStencilStateSet().AddResource(hashCode, state);
+		return state;
+	}
+
+	JaxRasterizeState* JaxResourceManager::CreateRasterizeState(const JaxRasterizeDesc& desc)
+	{
+		size_t size = 0;
+		void* pData = desc.GetCRC32Data(size);
+		size_t hashCode = CRC32Compute(pData, size);
+
+		JaxRasterizeState* state = (JaxRasterizeState*)JaxResourceManager::GetRasterizeStateSet().CheckIsHaveTheResource(hashCode);
+		if (state) return state;
+		state = JAX_NEW JaxRasterizeState();
+		state->m_RasterizeDesc = desc;
+		JaxResourceManager::GetRasterizeStateSet().AddResource(hashCode, state);
+		return state;
+	}
+
+	JaxBlendState* JaxResourceManager::CreateBlendState(const JaxBlendDesc& desc)
+	{
+		size_t size = 0;
+		void* pData = desc.GetCRC32Data(size);
+		size_t hashCode = CRC32Compute(pData, size);
+
+		JaxBlendState* state = (JaxBlendState*)JaxResourceManager::GetBlendStateSet().CheckIsHaveTheResource(hashCode);
+		if (state) return state;
+		state = JAX_NEW JaxBlendState();
+		state->m_BlendDesc = desc;
+		JaxResourceManager::GetBlendStateSet().AddResource(hashCode, state);
+		return state;
+	}
+
+	JaxSamplerState* JaxResourceManager::CreateSamplerState(const JaxSamplerDesc& desc)
+	{
+		size_t size = 0;
+		void* data = desc.GetCRC32Data(size);
+		size_t hashCode = CRC32Compute(data, size);
+		
+		JaxSamplerState* state = (JaxSamplerState*)JaxResourceManager::GetSamplerStateSet().CheckIsHaveTheResource(hashCode);
+		if (state)
+		{
+			return state;
+		}
+		state = JAX_NEW JaxSamplerState();
+		state->m_SamplerDesc = desc;
+		JaxResourceManager::GetSamplerStateSet().AddResource(hashCode, state);
+		return state;
+	}
+
+	JaxTexAllState* JaxResourceManager::Load2DTexture(const TCHAR* fileName, JaxSamplerStatePtr state, size_t compressType, bool isNormal, bool bSRGB)
+	{
+		if (!fileName)
+		{
+			return NULL;
+		}
+		JaxFileName name = fileName;
+		JaxString ext;
+		if (!name.GetExtension(ext))
+		{
+			return NULL;
+		}
+		JaxTexAllState* texAllState = NULL;
+		JaxImage* img = NULL;
+		if (ext == JaxImage::sm_ImageFormat[JaxImage::IF_BMP])
+		{
+			img = JAX_NEW JaxBMPImage();
+		}
+		else
+		{
+			return NULL;
+		}
+		if (!img->Load(name.GetBuffer()))
+		{
+			JAXMAC_DELETE(img);
+			return nullptr;
+		}
+		size_t width = img->GetWidth();
+		size_t height = img->GetHeight();
+		if (!width || !height)
+		{
+			JAXMAC_DELETE(img);
+			return nullptr;
+		}
+		if (!IsTwoPower(width) || !IsTwoPower(height))
+		{
+			JAXMAC_DELETE(img);
+			return nullptr;
+		}
+		Jax2DTexture* texture = JAX_NEW Jax2DTexture(width, height, JaxRenderer::SFT_A8R8G8B8, 0, 1);
+		if (!texture)
+		{
+			JAXMAC_DELETE(img);
+			return nullptr;
+		}
+		texture->CreateRAMData();
+		for (size_t cy = 0; cy < height; cy++) {
+			for (size_t cx = 0; cx < width; cx++) {
+				unsigned idx = cy * width + cx;
+				byte* buffer = texture->GetBuffer(0, idx);
+				const byte* imgBuffer = img->GetPixel(cx, cy);
+				if (img->GetBPP() == 8)
+				{
+					buffer[0] = imgBuffer[0];
+					buffer[1] = imgBuffer[0];
+					buffer[2] = imgBuffer[0];
+					buffer[3] = 255;
+				}
+				else if (img->GetBPP() == 24)
+				{
+					buffer[0] = imgBuffer[0];
+					buffer[1] = imgBuffer[1];
+					buffer[2] = imgBuffer[2];
+					buffer[3] = 255;
+				}
+				else if (img->GetBPP() == 32)
+				{
+					buffer[0] = imgBuffer[0];
+					buffer[1] = imgBuffer[1];
+					buffer[2] = imgBuffer[2];
+					buffer[3] = imgBuffer[3];
+				}
+			}
+		}
+
+		byte* last = texture->GetBuffer(0);
+		for (size_t i = 1; i < texture->GetMipLevel(); ++i)
+		{
+			byte* now = texture->GetBuffer(i);
+			if (JaxResourceManager::GetNextMipData(last, texture->GetWidth(i - 1), texture->GetHeight(i - 1), now, texture->GetChannelPerPixel()))
+			{
+				JAXMAC_DELETE(texture);
+				JAXMAC_DELETE(img);
+				return nullptr;
+			}
+			last = texture->GetBuffer(i);
+		}
+		if (img)
+		{
+			JAXMAC_DELETE(img);
+		}
+		texAllState = JAX_NEW JaxTexAllState(texture);
+		if (state)
+		{
+			texAllState->SetSamplerState(state);
+		}
+		texAllState->SetSRGBEnable(bSRGB);
+		return texAllState;
 	}
 
 	bool JaxResourceManager::sm_bRenderThread = false;

@@ -372,4 +372,46 @@ namespace Jax
 	}
 
 	
+	bool JaxFileName::GetExtension(JaxString& ext)
+	{
+		return ext.GetString(*this, _T('.'), -1, false, false);
+	}
+
+	bool JaxFileName::GetBaseName(JaxString& baseName)
+	{
+		bool res = false;
+		JaxString tmp;
+		res = GetBaseNameAndExtension(tmp);
+		if (!res)
+		{
+			return false;
+		}
+		res = baseName.GetString(tmp, _T('.'), -1);
+		return res;
+	}
+
+	bool JaxFileName::GetBaseNameAndExtension(JaxString& baseAndExt)
+	{
+		bool res = baseAndExt.GetString(*this, _T('\\'), -1, false, false);
+		if (!res)
+		{
+			res = baseAndExt.GetString(*this, _T('/'), -1, false, false);
+		}
+		return res;
+	}
+
+	bool JaxFileName::GetPath(JaxString& path)
+	{
+		bool res = path.GetString(*this, _T('\\'), -1, true, false);
+		if (!res)
+		{
+			res = path.GetString(*this, _T('/'), -1, true, false);
+		}
+		return res;
+	}
+
+	bool JaxFileName::GetPathAndName(JaxString& pathAndName)
+	{
+		return pathAndName.GetString(*this, _T('.'), -1, false, false);
+	}
 }

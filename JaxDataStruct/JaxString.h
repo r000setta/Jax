@@ -69,4 +69,18 @@ namespace Jax
 
 	JAXDATASTRUCT_API int StringToInt(const JaxString& String);
 	JAXDATASTRUCT_API JAXREAL StringToReal(const JaxString& String);
+
+	class JAXDATASTRUCT_API JaxFileName :public JaxString
+	{
+	public:
+		JaxFileName() {}
+		JaxFileName(const TCHAR* str) :JaxString(str) {}
+		JaxFileName(const JaxString& str) :JaxString(str){}
+		~JaxFileName() {}
+		bool GetExtension(JaxString& ext);
+		bool GetBaseName(JaxString& baseName);
+		bool GetBaseNameAndExtension(JaxString& baseAndExt);
+		bool GetPath(JaxString& path);
+		bool GetPathAndName(JaxString& pathAndName);
+	};
 }

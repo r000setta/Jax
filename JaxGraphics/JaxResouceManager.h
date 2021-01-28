@@ -5,7 +5,7 @@
 #include "JaxMap.h"
 #include "JaxName.h"
 #include "JaxPriority.h"
-
+#include "Jax2DTexture.h"
 namespace Jax
 {
 	class JaxResourceControll
@@ -39,6 +39,22 @@ namespace Jax
 		const MapElement<KEY, VALUE>* GetResource(unsigned int i);
 	};
 
+	class JaxName;
+	class JaxTexture;
+	class JaxTexAllState;
+	DECLARE_PTR(JaxName)
+	DECLARE_PTR(JaxTexAllState)
+
+	DECLARE_PTR(JaxDepthStencilState)
+	DECLARE_PTR(JaxRasterizeState)
+	DECLARE_PTR(JaxBlendState)
+	DECLARE_PTR(JaxSamplerState)
+
+	class JaxBlendDesc;
+	class JaxDepthStencilDesc;
+	class JaxRasterizeDesc;
+	class JaxSamplerDesc;
+
 	class JAXGRAPHIC_API JaxResourceManager
 	{
 		DECLARE_PRIORITY
@@ -55,6 +71,11 @@ return s_##ResourceName##Set; \
 }
 
 		GET_INNER_RESOURCE_SET(Name);
+		GET_INNER_RESOURCE_SET(BlendState)
+		GET_INNER_RESOURCE_SET(DepthStencilState)
+		GET_INNER_RESOURCE_SET(RasterizeState)
+		GET_INNER_RESOURCE_SET(BlendState)
+		GET_INNER_RESOURCE_SET(SamplerState)
 
 		static JaxName* CreateName(const TCHAR* pChar);
 		static JaxName* CreateName(const JaxString& string);
@@ -67,6 +88,23 @@ return s_##ResourceName##Set; \
 		}
 
 		DECLARE_INITIAL_ONLY
+		
+		static JaxDepthStencilState* CreateDepthStencilState(const JaxDepthStencilDesc& desc);
+		static JaxRasterizeState* CreateRasterizeState(const JaxRasterizeDesc& desc);
+		static JaxBlendState* CreateBlendState(const JaxBlendDesc& desc);
+		static JaxSamplerState* CreateSamplerState(const JaxSamplerDesc& desc);
+
+		static JaxString sm_TexturePath;
+
+		static JaxTexAllState* Load2DTexture(const TCHAR* fileName, JaxSamplerStatePtr state = NULL,
+			size_t compressType = 0, bool isNormal = false, bool bSRGB = false);
+
+		template<typename T>
+		static bool GetNextMipData(const T* inData, size_t inDataWidth, size_t inDataHeight,
+			T* outData, size_t channel);
+		template<typename T>
+		static bool GetNextMipData(const T* inData, size_t inDataWidth, size_t inDataHeight,
+			size_t inDataLength, T* outData, size_t channel);
 
 	protected:
 		static JaxCriticalSection sm_NameCri;
@@ -151,6 +189,109 @@ return s_##ResourceName##Set; \
 	{
 		JAX_ASSERT(i < m_Resource.GetNum());
 		return &m_Resource[i];
+	}
+
+	template<typename T>
+	inline bool JaxResourceManager::GetNextMipData(const T* inData, size_t inDataWidth, size_t inDataHeight, T* outData, size_t channel)
+	{
+		JAX_ASSERT(inData || outData);
+		size_t outDataWidth = inDataWidth >> 1;
+		if (!outDataWidth)
+		{
+			outDataWidth = 1;
+		}
+		size_t outDataHeight = inDataHeight >> 1;
+		if (!outDataHeight)
+		{
+			outDataHeight = 1;
+		}
+		for (size_t i = 0; i < outDataWidth; ++i)
+		{
+			size_t row0 = i * 2;
+			size_t row1 = i * 2 + 1;
+			if (r1 >= inDataWidth)
+			{
+				r1 = inDataWidth - 1;
+			}
+			for (size_t j = 0; j < outDataHeight; ++j)
+			{
+				size_t col0 = j * 2;
+				size_t col1 = j * 2 + 1;
+				if (col1 >= inDataHeight)
+				{
+					col1 = inDataHeight - 1;
+				}
+				for (size_t k = 0; k < channel; ++k)
+				{
+					outData[(j+i*outDataHeight)*channel+k]=
+						(T)((inData[(col0+row0*inDataHeight)*channel+k]+inData[(col1+col0*inDataHeight)*channel+k]
+							+ inData[col0 + row1 * inDataHeight) * channel + k] + inData[(col1 + row1 * inDataHeight) * channel + k]) * 0.25f);
+				}
+			}
+		}
+		return true;
+	}
+
+	template<typename T>
+	inline bool JaxResourceManager::GetNextMipData(const T* inData, size_t inDataWidth, size_t inDataHeight, size_t inDataLength, T* outData, size_t channel)
+	{
+		JAX_ASSERT(inData || outData);
+		size_t outDataWidth = inDataWidth >> 1;
+		if (!outDataWidth)
+		{
+			outDataWidth = 1;
+		}
+		size_t outDataHeight = inDataHeight >> 1;
+		if (!outDataHeight)
+		{
+			outDataHeight = 1;
+		}
+		size_t outDataLength = inDataLength >> 1;
+		if (!outDataLength)
+		{
+			outDataLength = 1;
+		}
+		for (size_t s = 0; s < outDataLength; ++s)
+		{
+			size_t len0 = s * 2;
+			size_t len1 = s * 2 + 1;
+			if (len1 >= outDataLength)
+			{
+				len1 = outDataLength - 1;
+			}
+			for (size_t i = 0; i < outDataWidth; ++i)
+			{
+				size_t row0 = i * 2;
+				size_t row1 = i * 2 + 1;
+				if (row1 >= inDataWidth)
+				{
+					row1 = inDataWidth - 1;
+				}
+				for (size_t j = 0; j < outDataHeight; ++j)
+				{
+					size_t col0 = j * 2;
+					size_t col1 = j * 2 + 1;
+					if (col1 >= inDataHeight)
+					{
+						col1 = inDataHeight - 1;
+					}
+					for (size_t k = 0; k < channel; ++k)
+					{
+						outData[(j + i * outDataHeight + s * outDataHeight * outDataWidth) * channel + k]
+							= (T)((inData[(col0 + row0 * inDataHeight + len0 * inDataHeight * inDataWidth) * channel + k] +
+								inData[(col1 + row0 * inDataHeight + len0 * inDataHeight * inDataWidth) * channel + k] +
+								inData[(col0 + row1 * inDataHeight + len0 * inDataHeight * inDataWidth) * channel + k] +
+								inData[(col1 + row1 * inDataHeight + len0 * inDataHeight * inDataWidth) * channel + k] +
+								inData[(col0 + row0 * inDataHeight + len1 * inDataHeight * inDataWidth) * channel + k] +
+								inData[(col1 + row0 * inDataHeight + len1 * inDataHeight * inDataWidth) * channel + k] +
+								inData[(col0 + row1 * inDataHeight + len1 * inDataHeight * inDataWidth) * channel + k] +
+								inData[(col1 + row1 * inDataHeight + len1 * inDataHeight * inDataWidth) * channel + k] +
+								) * 0.125f);
+					}
+				}
+			}
+		}
+		return true;
 	}
 
 }

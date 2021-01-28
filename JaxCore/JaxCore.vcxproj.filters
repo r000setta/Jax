@@ -30,6 +30,9 @@
     <ClInclude Include="JaxFile.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="JaxImage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JaxSystem.cpp">
@@ -42,6 +45,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="JaxFile.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxImage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

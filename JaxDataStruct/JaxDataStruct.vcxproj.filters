@@ -27,6 +27,9 @@
     <ClInclude Include="JaxMap.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="JaxBitArray.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JaxArray.cpp">

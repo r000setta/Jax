@@ -280,5 +280,104 @@ namespace Jax
 		}
 
 		m_pMainChain = NULL;
+		m_uiDisplayFormat = SFT_A8R8G8B8;
+		m_uiBufferFormat = SFT_A8R8G8B8;
+		m_uiDepthStencilFormat = SFT_D24S8;
+
+		JaxMemset(&m_SwapChainDesc, 0, sizeof(m_SwapChainDesc));
+		m_SwapChainDesc.BufferCount = 1;
+		m_SwapChainDesc.BufferDesc.Width = screenWidth;
+		m_SwapChainDesc.BufferDesc.Height = screenHeight;
+		m_SwapChainDesc.BufferDesc.Format = DXGI_FORMAT_B8G8R8A8_UNORM;
+		m_SwapChainDesc.OutputWindow = m_MainWindow;
+		m_SwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+		m_SwapChainDesc.Windowed = m_bWindowed;
+		m_SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
+		m_SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;
+
+		m_SwapChainDesc.BufferDesc.RefreshRate.Numerator = 0;
+		m_SwapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
+
+		if (multisample > m_uiMaxMultisample)
+		{
+			m_uiCurMultisample = m_uiMaxMultisample;
+		}
+		else
+		{
+			m_uiCurMultisample = multisample;
+		}
+
+		m_uiCurRTMultisample = m_uiCurMultisample;
+		res = m_pDevice->CheckMultisampleQualityLevels((DXGI_FORMAT)sm_dwTextureFormatType[SFT_A8R8G8B8],
+			sm_dwMultiSampleTypes[m_uiCurMultisample], &numMultisampleQualities);
+		JAX_ASSERT(SUCCEEDED(res) && numMultisampleQualities > 0);
+		m_dwMultsampleQuality = numMultisampleQualities;
+
+		m_SwapChainDesc.SampleDesc.Count = sm_dwMultiSampleTypes[m_uiCurMultisample];
+		m_SwapChainDesc.SampleDesc.Quality = m_dwMultsampleQuality - 1;
+
+		IDXGIDevice* pDXGIDevice;
+		res = m_pDevice->QueryInterface(IID_IDXGIDevice, (void**)&pDXGIDevice);
+		JAX_ASSERT(SUCCEEDED(res));
+		res = sm_pDXGI->CreateSwapChain(pDXGIDevice, &m_SwapChainDesc, &m_pMainChain);
+		JAX_ASSERT(SUCCEEDED(res));
+
+		ID3D11Texture2D* pBackBuffer = NULL;
+		res = m_pMainChain->GetBuffer(0, IID_ID3D11Texture2D, (LPVOID*)&pBackBuffer);
+		JAX_ASSERT(SUCCEEDED(res));
+
+		res = m_pDevice->CreateRenderTargetView(pBackBuffer, NULL, &m_pMainRenderTargetView);
+		JAX_ASSERT(SUCCEEDED(res));
+		JAXMAC_RELEASE(pBackBuffer);
+
+		D3D11_TEXTURE2D_DESC descDepth;
+		ZeroMemory(&descDepth, sizeof(descDepth));
+		descDepth.Width = screenWidth;
+		descDepth.Height = screenHeight;
+		descDepth.MipLevels = 1;
+		descDepth.ArraySize = 1;
+		descDepth.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
+		descDepth.SampleDesc.Count = sm_dwMultiSampleTypes[m_uiCurMultisample];
+		descDepth.SampleDesc.Quality = m_dwMultsampleQuality - 1;
+		descDepth.Usage = D3D11_USAGE_DEFAULT;
+		descDepth.CPUAccessFlags = 0;
+		descDepth.MiscFlags = 0;
+		res = m_pDevice->CreateTexture2D(&descDepth, NULL, &m_pMainDepthStencil);
+		JAX_ASSERT(SUCCEEDED(res));
+
+		D3D11_DEPTH_STENCIL_VIEW_DESC descDSV;
+		ZeroMemory(&descDSV, sizeof(descDSV));
+		descDSV.Format = descDepth.Format;
+		descDSV.ViewDimension = D3D11_DSV_DIMENSION_TEXTURE2D;
+		descDSV.Texture2D.MipSlice = 0;
+		res = m_pDevice->CreateDepthStencilView(m_pMainDepthStencil, &descDSV, &m_pMainDepthStencilView);
+		JAX_ASSERT(SUCCEEDED(res));
+		
+		m_uiCurAnisotropy = D3D11_MAX_MAXANISOTROPY;
+
+		m_uiMaxTexture = (TEXLEVEL < D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT) ? TEXLEVEL : D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT;
+		m_uiMaxRTNum = D3D11_SIMULTANEOUS_RENDER_TARGET_COUNT;
+		m_uiMaxVTexture = (TEXLEVEL < D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT) ? TEXLEVEL : D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT;
+		m_uiMaxGTexture = (TEXLEVEL < D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT) ? TEXLEVEL : D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT;
+		m_uiMaxDTexture = (TEXLEVEL < D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT) ? TEXLEVEL : D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT;
+		m_uiMaxHTexture = (TEXLEVEL < D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT) ? TEXLEVEL : D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT;
+
+		m_uiMaxTextureHeight = 8192;
+		m_uiMaxTextureWidth = 8192;
+		m_uiMaxUseClipPlane = 8;
+
+		m_pChain = NULL;
+		m_pChainRenderTargetView = NULL;
+		m_pChainDepthStencil = NULL;
+		m_pChainDepthStencilView = NULL;
+		if (m_iNumChildWindow > 0 && m_bWindowed)
+		{
+			m_pChain = JAX_NEW IDXGISwapChain * [m_iNumChildWindow];
+			m_pChainRenderTargetView = JAX_NEW ID3D11RenderTargetView * [m_iNumChildWindow];
+			m_pChainDepthStencil = JAX_NEW ID3D11Texture2D * [m_iNumChildWindow];
+			m_pChainDepthStencilView = JAX_NEW ID3D11DepthStencilView * [m_iNumChildWindow];
+		}
+
+		JAXMAC_RELEASE(pDXGIDevice);
 	}
 }
