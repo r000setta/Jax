@@ -379,5 +379,8 @@ namespace Jax
 		}
 
 		JAXMAC_RELEASE(pDXGIDevice);
+		SetDefaultValue();
+
+		m_pDeviceContext->OMSetRenderTargets(1, &m_pMainRenderTargetView, m_pMainDepthStencilView);
 	}
 }

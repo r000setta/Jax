@@ -18,6 +18,9 @@
     <ClInclude Include="JaxDx11Renderer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="JaxDx11Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JaxDx11Renderer.cpp">

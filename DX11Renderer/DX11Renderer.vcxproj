@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JaxDx11Renderer.h" />
+    <ClInclude Include="JaxDx11Resource.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JaxDx11Renderer.cpp" />

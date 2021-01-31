@@ -1,4 +1,5 @@
 #include "JaxVector4.h"
+#include "JaxMatrix4x4.h"
 
 namespace Jax
 {
@@ -51,6 +52,18 @@ namespace Jax
 		y = _y;
 		z = _z;
 		w = _w;
+	}
+
+	JaxVector4 JaxVector4::operator*(const JaxMatrix4x4& m) const
+	{
+		JaxVector4 res;
+
+		res.x = x * m._00 + y * m._10 + z * m._20 + w * m._30;
+		res.y = x * m._01 + y * m._11 + z * m._21 + w * m._31;
+		res.z = x * m._02 + y * m._12 + z * m._22 + w * m._32;
+		res.w = x * m._03 + y * m._13 + z * m._23 + w * m._33;
+
+		return res;
 	}
 
 	void JaxVector4::operator+=(const JaxVector4& v)

@@ -1,5 +1,7 @@
 #include "JaxVector3.h"
 #include "JaxMatrix3x3.h"
+#include "JaxMatrix4x4.h"
+
 namespace Jax
 {
 	const JaxVector3 JaxVector3::sm_Up = JaxVector3(0.0f, 1.0f, 0.0f);
@@ -178,6 +180,19 @@ namespace Jax
 		return res;
 	}
 
+	JaxVector3 JaxVector3::operator*(const JaxMatrix4x4& mat) const
+	{
+		JaxVector3 res;
+		res.x = x * mat._00 + y * mat._10 + z * mat._20 + mat._30;
+		res.y = x * mat._01 + y * mat._11 + z * mat._21 + mat._31;
+		res.z = x * mat._02 + y * mat._12 + z * mat._22 + mat._32;
+		JAXREAL w = x * mat._03 + y * mat._13 + z * mat._23 + mat._33;
+
+		res.x = res.x / w;
+		res.y = res.y / w;
+		res.z = res.z / w;
+	}
+
 	JAXREAL JaxVector3::Dot(const JaxVector3& v) const
 	{
 		return (v.x * x + v.y * y + v.z * z);
@@ -223,7 +238,6 @@ namespace Jax
 	{
 		return JaxVector3(x / v.x, y / v.y, z / v.z);
 	}
-
 
 }
 

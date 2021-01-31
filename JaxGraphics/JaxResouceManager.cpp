@@ -5,6 +5,7 @@
 #include "JaxSamplerState.h"
 #include "JaxImage.h"
 #include "JaxTexAllState.h"
+#include "JaxVertexBuffer.h"
 namespace Jax
 {
 
@@ -56,6 +57,49 @@ namespace Jax
 		}
 		sm_NameCri.Unlock();
 		return name;
+	}
+
+	JaxVertexFormat* JaxResourceManager::LoadVeratexFormat(JaxVertexBuffer* vertexBuffer, JaxArray<JaxVertexFormat::VERTEXFORMAT_TYPE>* format)
+	{
+		if (!vertexBuffer && !format)
+			return nullptr;
+		if (vertexBuffer)
+		{
+			if (vertexBuffer->m_pVertexFormat)
+				return vertexBuffer->m_pVertexFormat;
+		}
+		JaxArray<JaxVertexFormat::VERTEXFORMAT_TYPE> formatArray;
+		if (!format)
+		{
+			if (!vertexBuffer->GetVertexFormat(formatArray))
+				return nullptr;
+			format = &formatArray;
+		}
+		else
+		{
+			if (!format->GetNum())
+				return nullptr;
+		}
+		size_t vertexFormatCode = CRC32Compute(format->GetBuffer(), sizeof(JaxVertexFormat::VERTEXFORMAT_TYPE) * format->GetNum());
+		JaxVertexFormat* vertexFormat = (JaxVertexFormat*)JaxResourceManager::GetVertexFormatSet().CheckIsHaveTheResource(vertexFormatCode);
+		if (vertexFormat)
+		{
+			if (vertexBuffer)
+			{
+				vertexBuffer->m_pVertexFormat = vertexFormat;
+			}
+			return vertexFormat;
+		}
+		vertexFormat = JAX_NEW JaxVertexFormat();
+		JaxResourceManager::GetVertexFormatSet().AddResource(vertexFormatCode, vertexFormat);
+		if (vertexBuffer)
+		{
+			vertexBuffer->m_pVertexFormat = vertexFormat;
+		}
+		vertexFormat->m_FormatArray = *format;
+		vertexFormat->m_uiVertexFormatCode = vertexFormatCode;
+		vertexFormat->LoadResource(JaxRenderer::sm_pRenderer);
+		return vertexFormat;
 	}
 
 	void JaxResourceManager::CacheResource()

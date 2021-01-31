@@ -1,2 +1,1 @@
 ﻿  JaxDataStruct.vcxproj -> D:\c++\Jax\JaxDataStruct\..\bin\JaxDataStruct_d.dll
-D:\vcpkg\scripts\buildsystems\msbuild\vcpkg.targets(109,5): error MSB3073: 命令“C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Bypass -noprofile -File "D:\vcpkg\scripts\buildsystems\msbuild\applocal.ps1" "D:\c++\Jax\JaxDataStruct\..\bin\JaxDataStruct_d.dll" "D:\vcpkg\installed\x86-windows\debug\bin" ".\Debug\JaxDataStruct.tlog\JaxDataStruct.write.1u.tlog" ".\Debug\vcpkg.applocal.log"”已退出，代码为 -1。

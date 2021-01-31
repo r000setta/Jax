@@ -80,5 +80,7 @@ namespace Jax
 		virtual void ClearStencilBuffer();
 		virtual void ClearBuffers();
 
+		virtual bool SetViewPort();
+
 	};
 }

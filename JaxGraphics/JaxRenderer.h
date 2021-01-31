@@ -11,6 +11,7 @@ namespace Jax
 {
 	class JaxBind;
 	class JaxResourceIdentifier;
+	class JaxIndexBuffer;
 
 	DECLARE_PTR(JaxTexture);
 	DECLARE_PTR(JaxVertexFormat);
@@ -206,10 +207,19 @@ namespace Jax
 		virtual bool OnLoadVBufferFormat(JaxVertexFormat* format, JaxResourceIdentifier*& id) = 0;
 		virtual bool OnReleaseVBufferFormat(JaxResourceIdentifier* id) = 0;
 
+		virtual bool OnLoadIBuffer(JaxIndexBuffer* buffer, JaxResourceIdentifier*& id) = 0;
+		virtual bool OnReleaseIBuffer(JaxResourceIdentifier* id) = 0;
+
 		virtual size_t SetVertexFormat(JaxVertexFormat* format) = 0;
 
 		virtual void* Lock(JaxTexture* texture, size_t level, size_t face) = 0;
 		virtual void UnLock(JaxTexture* texture, size_t level, size_t face) = 0;
+
+		virtual void* Lock(JaxIndexBuffer* buffer) = 0;
+		virtual void UnLock(JaxIndexBuffer* buffer) = 0;
+
+		virtual void* Lock(JaxRenderTarget* target) = 0;
+		virtual void unLock(JaxRenderTarget* target) = 0;
 
 		bool SetDefaultValue();
 		bool ReleaseDefaultValue();

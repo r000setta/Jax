@@ -44,5 +44,17 @@ namespace Jax
 
 		FORCEINLINE void Identity();
 		FORCEINLINE void SetZero();
+		FORCEINLINE void TransposeOf(const JaxMatrix4x4& mat);
+		FORCEINLINE void InverseOf(const JaxMatrix4x4& mat);
+
+		FORCEINLINE JaxVector3 Apply3X3(const JaxVector3& v) const
+		{
+			JAXREAL x, y, z;
+			x = v.x * _00 + v.y * _10 + v.z * _20;
+			y = v.x * _01 + v.y * _11 + v.z * _21;
+			z = v.x * _02 + v.y * _12 + v.z * _22;
+
+			return JaxVector3(x, y, z);
+		}
 	};
 }

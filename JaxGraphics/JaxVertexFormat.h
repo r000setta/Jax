@@ -42,6 +42,7 @@ namespace Jax
 
 	public:
 		friend class JaxRenderer;
+		friend class JaxResourceManager;
 
 		JaxArray<JaxVertexFormat::VERTEXFORMAT_TYPE> m_FormatArray;
 
@@ -53,6 +54,7 @@ namespace Jax
 	protected:
 		virtual bool OnLoadResource(JaxResourceIdentifier*& id);
 		virtual bool OnReleaseResource(JaxResourceIdentifier* id);
+
 		size_t m_uiVertexFormatCode;
 
 	};

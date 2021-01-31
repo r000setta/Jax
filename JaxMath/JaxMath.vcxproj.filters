@@ -33,6 +33,18 @@
     <ClInclude Include="JaxMatrix4x4.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="JaxPlane3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxLine3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxSphere3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxRay3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JaxMath.cpp">
@@ -51,6 +63,18 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="JaxMatrix4x4.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxSphere3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxLine3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxRay3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxPlane3.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

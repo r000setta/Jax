@@ -71,6 +71,7 @@ namespace Jax
 
 		bool SetData(const void* data, size_t num, size_t DT);
 		bool AddData(const void* data, size_t num, size_t DT);
+		bool CreateEmptyBuffer(size_t num, size_t DT);
 
 		static size_t sm_uiDataTypeByte[DT_MAXNUM];
 		static size_t sm_uiDataTypeChannel[DT_MAXNUM];

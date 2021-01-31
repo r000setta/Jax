@@ -29,6 +29,7 @@ namespace Jax
 		FORCEINLINE JaxVector3 GetVector3() const;
 		FORCEINLINE void Set(const JaxVector3& v);
 		FORCEINLINE void Set(JAXREAL _x, JAXREAL _y, JAXREAL _z, JAXREAL _w = 1.0f);
+		JaxVector4 operator*(const JaxMatrix4x4& m) const;
 
 		void operator+=(const JaxVector4& v);
 		void operator-=(const JaxVector4& v);

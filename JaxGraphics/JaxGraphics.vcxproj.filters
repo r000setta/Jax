@@ -28,6 +28,18 @@
     <Filter Include="Render\Vertex">
       <UniqueIdentifier>{c06ec014-f0ff-47ed-bd0c-b26577bf6aae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Node">
+      <UniqueIdentifier>{11468e06-f2f1-4293-9723-4d8fa4c3eed7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Node\Component">
+      <UniqueIdentifier>{a945813a-4ef5-41c9-855c-9b88b2031f40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render\SceneManager">
+      <UniqueIdentifier>{3b9e6ae0-3e75-4e7f-9f45-055160b10408}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Node\mesh">
+      <UniqueIdentifier>{6c276450-a785-4192-9557-f6e29b7c7603}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="JaxReference.h">
@@ -114,6 +126,27 @@
     <ClInclude Include="JaxDataBuffer.h">
       <Filter>Render\Vertex</Filter>
     </ClInclude>
+    <ClInclude Include="JaxIndexBuffer.h">
+      <Filter>Render\Vertex</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxCamera.h">
+      <Filter>Node\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxSpatial.h">
+      <Filter>Render\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxCuller.h">
+      <Filter>Render\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxGeometry.h">
+      <Filter>Node</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxMeshData.h">
+      <Filter>Node\mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="JaxVertexBuffer.h">
+      <Filter>Render\Vertex</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="JaxReference.cpp">
@@ -179,6 +212,12 @@
     <ClCompile Include="JaxSamplerState.cpp">
       <Filter>Render\RenderState</Filter>
     </ClCompile>
-    <ClCompile Include="JaxDataBuffer.cpp" />
+    <ClCompile Include="JaxDataBuffer.cpp">
+      <Filter>Render\Vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxIndexBuffer.cpp">
+      <Filter>Render\Vertex</Filter>
+    </ClCompile>
+    <ClCompile Include="JaxVertexBuffer.cpp" />
   </ItemGroup>
 </Project>

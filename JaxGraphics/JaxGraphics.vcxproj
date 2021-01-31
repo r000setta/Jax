@@ -155,11 +155,16 @@
     <ClInclude Include="Jax2DTexture.h" />
     <ClInclude Include="JaxBind.h" />
     <ClInclude Include="JaxBlendState.h" />
+    <ClInclude Include="JaxCamera.h" />
+    <ClInclude Include="JaxCuller.h" />
     <ClInclude Include="JaxCustomArchiveObject.h" />
     <ClInclude Include="JaxDataBuffer.h" />
     <ClInclude Include="JaxDepthStencilState.h" />
+    <ClInclude Include="JaxGeometry.h" />
     <ClInclude Include="JaxGraphic.h" />
+    <ClInclude Include="JaxIndexBuffer.h" />
     <ClInclude Include="JaxMain.h" />
+    <ClInclude Include="JaxMeshData.h" />
     <ClInclude Include="JaxName.h" />
     <ClInclude Include="JaxObject.h" />
     <ClInclude Include="JaxPointer.h" />
@@ -175,10 +180,12 @@
     <ClInclude Include="JaxRtti.h" />
     <ClInclude Include="JaxSamplerState.h" />
     <ClInclude Include="JaxShader.h" />
+    <ClInclude Include="JaxSpatial.h" />
     <ClInclude Include="JaxStream.h" />
     <ClInclude Include="JaxTexAllState.h" />
     <ClInclude Include="JaxTexture.h" />
     <ClInclude Include="JaxType.h" />
+    <ClInclude Include="JaxVertexBuffer.h" />
     <ClInclude Include="JaxVertexFormat.h" />
   </ItemGroup>
   <ItemGroup>
@@ -188,6 +195,7 @@
     <ClCompile Include="JaxCustomArchiveObject.cpp" />
     <ClCompile Include="JaxDataBuffer.cpp" />
     <ClCompile Include="JaxDepthStencilState.cpp" />
+    <ClCompile Include="JaxIndexBuffer.cpp" />
     <ClCompile Include="JaxMain.cpp" />
     <ClCompile Include="JaxName.cpp" />
     <ClCompile Include="JaxObject.cpp" />
@@ -203,6 +211,7 @@
     <ClCompile Include="JaxStream.cpp" />
     <ClCompile Include="JaxTexAllState.cpp" />
     <ClCompile Include="JaxTexture.cpp" />
+    <ClCompile Include="JaxVertexBuffer.cpp" />
     <ClCompile Include="JaxVertexFormat.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

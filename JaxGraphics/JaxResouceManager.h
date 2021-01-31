@@ -5,6 +5,7 @@
 #include "JaxMap.h"
 #include "JaxName.h"
 #include "JaxPriority.h"
+#include "JaxVertexFormat.h"
 #include "Jax2DTexture.h"
 namespace Jax
 {
@@ -42,6 +43,7 @@ namespace Jax
 	class JaxName;
 	class JaxTexture;
 	class JaxTexAllState;
+	class JaxVertexBuffer;
 	DECLARE_PTR(JaxName)
 	DECLARE_PTR(JaxTexAllState)
 
@@ -70,15 +72,19 @@ static JaxResourceSet<unsigned int,Jax##ResourceName##Ptr> s_##ResourceName##Set
 return s_##ResourceName##Set; \
 }
 
-		GET_INNER_RESOURCE_SET(Name);
+		GET_INNER_RESOURCE_SET(VertexFormat)
+		GET_INNER_RESOURCE_SET(Name)
 		GET_INNER_RESOURCE_SET(BlendState)
 		GET_INNER_RESOURCE_SET(DepthStencilState)
 		GET_INNER_RESOURCE_SET(RasterizeState)
 		GET_INNER_RESOURCE_SET(BlendState)
 		GET_INNER_RESOURCE_SET(SamplerState)
 
+
 		static JaxName* CreateName(const TCHAR* pChar);
 		static JaxName* CreateName(const JaxString& string);
+
+		static JaxVertexFormat* LoadVeratexFormat(JaxVertexBuffer* vertexBuffer, JaxArray<JaxVertexFormat::VERTEXFORMAT_TYPE>* format = nullptr);
 
 		static void CacheResource();
 

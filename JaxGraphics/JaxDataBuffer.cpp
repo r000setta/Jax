@@ -99,6 +99,37 @@ namespace Jax
 
 	bool JaxDataBuffer::AddData(const void* data, size_t num, size_t DT)
 	{
-		
+		if (DT >= DT_MAXNUM || !data || !num)
+			return false;
+
+		byte* tmp = JAX_NEW byte[(num + m_uiNum) * GetStride()];
+		if (!tmp)
+			return false;
+		JaxMemcpy(tmp, m_pData, GetStride() * m_uiNum);
+		JaxMemcpy(tmp + GetStride() * m_uiNum, data, GetStride() * num);
+
+		JAXMAC_DELETEA(m_pData);
+		m_uiNum += num;
+		m_pData = tmp;
+		m_uiSize = GetSize();
+		return true;
 	}
+
+	bool JaxDataBuffer::CreateEmptyBuffer(size_t num, size_t DT)
+	{
+		if (DT >= DT_MAXNUM || !num)
+			return false;
+		m_uiDT = DT;
+		m_uiNum = num;
+		JAXMAC_DELETEA(m_pData);
+
+		m_pData = JAX_NEW byte[GetSize()];
+		if (!m_pData)
+			return false;
+		JaxMemset(m_pData, 0, GetSize());
+		m_uiSize = GetSize();
+		return true;
+	}
+
+
 }

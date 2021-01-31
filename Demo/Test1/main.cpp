@@ -1,6 +1,8 @@
 #include <JaxMap.h>
 using namespace Jax;
-int main()
+
+class A
 {
-	JaxMapOrder<int, int> mp;
-}
+	bool a;
+	A() :a(false) {}
+};
